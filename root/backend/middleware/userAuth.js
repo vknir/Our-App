@@ -1,9 +1,10 @@
 import bodyParser from "body-parser";
 import jwt from 'jsonwebtoken'
-
+import mongoose from "mongoose";
 
 import { JWT_SECRET } from '../config.js';
-import { UserModel } from "../db";
+import { UserModel } from "../db.js";
+
 
 async function userAuth(req, res, next)
 {
@@ -11,7 +12,13 @@ async function userAuth(req, res, next)
 
     try{
         const decoded = jwt.verify( token , JWT_SECRET)
-        console.log(decoded)
+
+        const currentUserId = new mongoose.Types.ObjectId(decoded._id)
+
+        const currentUser = await UserModel.findById(currentUserId)
+        
+        req.body.username=currentUser.username
+        req.body._id=currentUser._id;
         next();
     }catch(e)
     {

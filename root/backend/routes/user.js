@@ -4,9 +4,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 
-import { UserModel } from "../db.js";
+import { UserModel, PostsModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import userAuth from "../middleware/userAuth.js";
+import mongoose from "mongoose";
 
 const userRouter = express.Router();
 
@@ -65,7 +66,7 @@ userRouter.post("/sign-up", async (req, res) => {
           });
         } catch (e) {
           console.log(e);
-          res.json({ message: "Unabe too update db hash" });
+          res.json({ message: "Username already in use hash" });
         }
       }
     });
@@ -104,9 +105,46 @@ userRouter.post("/login", async (req, res) => {
 });
 
 userRouter.use(userAuth)
-userRouter.get("/", (req, res) => {
-  res.json({ message: "setup corn job" });
+userRouter.get("/feed", (req, res) => {
+  res.json({ message: "display feed" });
 });
+
+userRouter.get('/create', (req, res)=>{
+  res.json({message:"send create page form"})
+})
+
+userRouter.post('/create', async (req, res)=>{
+    const {title , content}=req.body;
+
+    try{
+      const postValidator = z.object( {
+        title: z.string().min(3),
+        content: z.string(),
+      })
+
+
+      const newPost = {
+        title:title,
+        content: content,
+        userId: req.body._id,
+        date: new Date(),
+      }
+
+      const dbResponse = await PostsModel.create(newPost)
+      const currentUserId = new mongoose.Types.ObjectId(req.body._id)
+
+      const  currentUser = UserModel.findById(currentUserId)
+      console.log(currentUser)
+
+      console.log(dbResponse)
+
+      res.json({message:'post added successfully'})
+    }catch(e)
+    {
+      console.log(e)
+      res.json({mesage:'Title or content not valid'})
+    } 
+})
 
 
 export default userRouter;
