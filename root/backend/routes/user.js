@@ -14,17 +14,19 @@ const userRouter = express.Router();
 userRouter.use(bodyParser.urlencoded({ extended: false }));
 
 const inputValidator = z.object({
-  username: z.string().min(2).max(20),
-  password: z.string().min(3),
+  username: z
+    .string()
+    .min(2, { message: "length should be greater than 1" })
+    .max(20, { message: "length should be less than 21" }),
+  password: z.string().min(3, { message: "too short" }),
+  email: z.string().email({ message: "Email not valid" }),
 });
 
-
-
 userRouter.post("/sign-up", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
 
   try {
-    inputValidator.parse({ username, password });
+    inputValidator.parse({ username, password, email });
 
     bcrypt.hash(password, 3, async (err, hash) => {
       try {
@@ -37,9 +39,9 @@ userRouter.post("/sign-up", async (req, res) => {
       }
 
       if (hash) {
-        console.log(hash);
         const newUser = {
           username: username,
+          email: email,
           password: hash,
           followers: [],
           following: [],
@@ -47,14 +49,13 @@ userRouter.post("/sign-up", async (req, res) => {
           posts: [],
         };
         try {
-          const dbResponse = await UserModel.create(newUser);
-          console.log(dbResponse);
+          await UserModel.create(newUser);
 
           const findUser = await UserModel.findOne({
             username: newUser.username,
-          }).exec();
+          });
 
-          const token = await jwt.sign(
+          const token = jwt.sign(
             {
               _id: findUser._id,
             },
@@ -89,10 +90,9 @@ userRouter.post("/login", async (req, res) => {
         if (e) throw e;
         if (result) {
           const token = jwt.sign({ _id: findUser._id }, JWT_SECRET);
-          res.json({token:token})
-        }
-        else{
-            res.json({message:"invalid creds result"})
+          res.json({ token: token });
+        } else {
+          res.json({ message: "invalid creds result" });
         }
       });
     } catch (e) {
@@ -104,47 +104,44 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.use(userAuth)
+userRouter.use(userAuth);
 userRouter.get("/feed", (req, res) => {
   res.json({ message: "display feed" });
 });
 
-userRouter.get('/create', (req, res)=>{
-  res.json({message:"send create page form"})
-})
+userRouter.get("/create", (req, res) => {
+  res.json({ message: "send create page form" });
+});
 
-userRouter.post('/create', async (req, res)=>{
-    const {title , content}=req.body;
+userRouter.post("/create", async (req, res) => {
+  const { title, content } = req.body;
 
-    try{
-      const postValidator = z.object( {
-        title: z.string().min(3),
-        content: z.string(),
-      })
+  try {
+    const postValidator = z.object({
+      title: z.string().min(3),
+      content: z.string(),
+    });
 
+    const newPost = {
+      title: title,
+      content: content,
+      userId: req.body._id,
+      date: new Date(),
+    };
 
-      const newPost = {
-        title:title,
-        content: content,
-        userId: req.body._id,
-        date: new Date(),
-      }
+    await PostsModel.create(newPost);
+    const currentUserId = new mongoose.Types.ObjectId(req.body._id);
 
-      const dbResponse = await PostsModel.create(newPost)
-      const currentUserId = new mongoose.Types.ObjectId(req.body._id)
+    const currentUser = await UserModel.findById(currentUserId);
 
-      const  currentUser = UserModel.findById(currentUserId)
-      console.log(currentUser)
+    currentUser.posts.push(newPost);
+    currentUser.save();
 
-      console.log(dbResponse)
-
-      res.json({message:'post added successfully'})
-    }catch(e)
-    {
-      console.log(e)
-      res.json({mesage:'Title or content not valid'})
-    } 
-})
-
+    res.json({ message: "post added successfully" });
+  } catch (e) {
+    console.log(e);
+    res.json({ mesage: "Title or content not valid" });
+  }
+});
 
 export default userRouter;

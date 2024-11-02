@@ -1,8 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true},
-    posts: { type : Array},
+    username: { type: String, unique:true ,required: true},
+    email:{type:String, unique:true},
+    posts: { type :Array },
     pfp : {type : String},
     followers: {type : Array},
     following: { type : Array},

@@ -1,4 +1,3 @@
-import bodyParser from "body-parser";
 import jwt from 'jsonwebtoken'
 import mongoose from "mongoose";
 
