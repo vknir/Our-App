@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 
-import { UserModel, PostsModel } from "../db.js";
+import { UserModel  } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import userAuth from "../middleware/userAuth.js";
-import mongoose from "mongoose";
+import userPostsRouter from "../routes/userPosts.js";
 
 const userRouter = express.Router();
 
@@ -20,6 +20,10 @@ const inputValidator = z.object({
     .max(20, { message: "length should be less than 21" }),
   password: z.string().min(3, { message: "too short" }),
   email: z.string().email({ message: "Email not valid" }),
+});
+const postValidator = z.object({
+  title: z.string().min(3),
+  content: z.string(),
 });
 
 userRouter.post("/sign-up", async (req, res) => {
@@ -113,35 +117,12 @@ userRouter.get("/create", (req, res) => {
   res.json({ message: "send create page form" });
 });
 
-userRouter.post("/create", async (req, res) => {
-  const { title, content } = req.body;
+userRouter.use('/posts',userPostsRouter)
 
-  try {
-    const postValidator = z.object({
-      title: z.string().min(3),
-      content: z.string(),
-    });
 
-    const newPost = {
-      title: title,
-      content: content,
-      userId: req.body._id,
-      date: new Date(),
-    };
 
-    await PostsModel.create(newPost);
-    const currentUserId = new mongoose.Types.ObjectId(req.body._id);
 
-    const currentUser = await UserModel.findById(currentUserId);
 
-    currentUser.posts.push(newPost);
-    currentUser.save();
 
-    res.json({ message: "post added successfully" });
-  } catch (e) {
-    console.log(e);
-    res.json({ mesage: "Title or content not valid" });
-  }
-});
 
 export default userRouter;
