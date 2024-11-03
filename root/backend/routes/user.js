@@ -98,11 +98,11 @@ userRouter.post("/login", async (req, res) => {
           const token = jwt.sign({ _id: findUser._id }, JWT_SECRET);
           res.json({ token: token });
         } else {
-          res.json({ message: "invalid creds result" });
+          res.status(401).json({ message: "invalid creds result" });
         }
       });
     } catch (e) {
-      res.json({ message: "Invalid credentails compare" });
+      res.status(401).json({ message: "Invalid credentails compare" });
     }
   } catch (e) {
     console.log(e);
