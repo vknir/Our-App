@@ -108,6 +108,27 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
+userRouter.get('/:username', async (req, res)=>{
+  try{
+    const findUser= await UserModel.findOne({username: req.params.username})
+    if( findUser === null)
+        throw 'user does not exist find user'
+    const userDetails={
+      username: findUser.username,
+      pfp: findUser.pfp,
+      followers: findUser.followers,
+      following:  findUser.following,
+      posts: findUser.posts
+    }
+
+    res.json(userDetails)
+  }catch(e)
+  {
+    console.log(e)
+    res.json({'message':'User doesnot exist '})
+  }
+})
+
 userRouter.use(userAuth);
 userRouter.get("/feed", (req, res) => {
   res.json({ message: "display feed" });
