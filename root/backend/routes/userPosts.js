@@ -1,33 +1,30 @@
-import express from 'express';
-import {z} from 'zod';
+import express from "express";
+import { z } from "zod";
 import mongoose, { Types } from "mongoose";
 
 import { UserModel, PostsModel } from "../db.js";
 
 const userPostsRouter = express.Router();
 const postValidator = z.object({
-    title: z.string().min(3),
-    content: z.string(),
-  });
-
+  title: z.string().min(3),
+  content: z.string(),
+});
 
 userPostsRouter.post("/create", async (req, res) => {
   const { title, content } = req.body;
 
   try {
-    
-
     const newPost = {
       title: title,
       content: content,
       userId: req.body._id,
       date: new Date(),
-      edited:false,
+      edited: false,
     };
 
-    postValidator.parse(newPost)
+    postValidator.parse(newPost);
 
-    const currentPost= await PostsModel.create(newPost);
+    const currentPost = await PostsModel.create(newPost);
     const currentUserId = new mongoose.Types.ObjectId(req.body._id);
 
     const currentUser = await UserModel.findById(currentUserId);
@@ -42,70 +39,58 @@ userPostsRouter.post("/create", async (req, res) => {
   }
 });
 
+userPostsRouter.put("/:postid", async (req, res) => {
+  const { title, content } = req.body;
 
+  const updatedPost = {
+    title: title,
+    content: content,
+    edited: true,
+    date: new Date(),
+    userId: req.body._id,
+  };
 
-userPostsRouter.put('/:postid', async (req, res)=>{
-  const {title , content} = req.body
+  const currentPostID = new mongoose.Types.ObjectId(req.params.postid);
 
-  const updatedPost ={
-    title:title,
-    content:content,
-    edited:true,
-    date:new Date(),
-    userId: req.body._id
+  try {
+    if (req.params.postid.length != 24) throw "lengt issue";
+    const postResponse = await PostsModel.findByIdAndUpdate(
+      { _id: currentPostID },
+      updatedPost
+    );
+
+    if (postResponse === null) throw "no such posts exists";
+
+    res.json({ message: "post updated" });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "no such posts exists" });
   }
+});
 
-  const currentPostID= new mongoose.Types.ObjectId(req.params.postid)
+userPostsRouter.delete("/:postid", async (req, res) => {
+  const currentPostID = new mongoose.Types.ObjectId(req.params.postid);
+  const currentUserId = new mongoose.Types.ObjectId(req.body._id);
 
-  try{
-    if(req.params.postid.length !=24)
-      throw 'lengt issue';
-    const postResponse= await PostsModel.findByIdAndUpdate({_id:currentPostID}, updatedPost)
-    
-    if( postResponse === null)
-        throw 'no such posts exists'
+  try {
+    const currentUser = await UserModel.findById(currentUserId);
 
-    res.json({message:'post updated'})
-  }catch(e)
-  {
-    console.log(e)
-    res.json({message:'no such posts exists'})
-  }
-
-})
-
-
-userPostsRouter.delete('/:postid', async (req, res)=>{
-
-
-  
-
-  const currentPostID= new mongoose.Types.ObjectId(req.params.postid)
-  const currentUserId = new mongoose.Types.ObjectId(req.body._id)
-
-  try{
-
-    const currentUser = await UserModel.findById(currentUserId)
-
-    const index = currentUser.posts.indexOf( req.params.postid)
-    if( index > -1){
-      currentUser.posts.splice(index,1);
-    }
-    else{
-      throw 'post does not exist if else'
+    const index = currentUser.posts.indexOf(req.params.postid);
+    if (index > -1) {
+      currentUser.posts.splice(index, 1);
+    } else {
+      throw "post does not exist if else";
     }
 
     currentUser.save();
 
-    await PostsModel.findByIdAndDelete({_id:currentPostID})
+    await PostsModel.findByIdAndDelete({ _id: currentPostID });
 
-    res.json({message:'post deleted'})
-  }catch(e)
-  {
-    console.log(e)
-    res.json({message:'no such posts exists'})
+    res.json({ message: "post deleted" });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "no such posts exists" });
   }
-
-})
+});
 
 export default userPostsRouter;

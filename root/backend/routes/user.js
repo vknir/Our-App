@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 
-import { UserModel  } from "../db.js";
+import { UserModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import userAuth from "../middleware/userAuth.js";
 import userPostsRouter from "../routes/userPosts.js";
@@ -20,10 +20,6 @@ const inputValidator = z.object({
     .max(20, { message: "length should be less than 21" }),
   password: z.string().min(3, { message: "too short" }),
   email: z.string().email({ message: "Email not valid" }),
-});
-const postValidator = z.object({
-  title: z.string().min(3),
-  content: z.string(),
 });
 
 userRouter.post("/sign-up", async (req, res) => {
@@ -85,6 +81,12 @@ userRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
+
+    const  inputValidator= z.object({
+      username:z.string(),
+      password:z.string(),
+    })
+
     inputValidator.parse({ username, password });
 
     const findUser = await UserModel.findOne({ username: username });
@@ -108,28 +110,53 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get('/:username', async (req, res)=>{
-  try{
-    const findUser= await UserModel.findOne({username: req.params.username})
-    if( findUser === null)
-        throw 'user does not exist find user'
-    const userDetails={
+userRouter.get("/:username", async (req, res) => {
+  try {
+    const findUser = await UserModel.findOne({ username: req.params.username });
+    if (findUser === null) throw "user does not exist find user";
+    const userDetails = {
       username: findUser.username,
       pfp: findUser.pfp,
       followers: findUser.followers,
-      following:  findUser.following,
-      posts: findUser.posts
-    }
+      following: findUser.following,
+      posts: findUser.posts,
+    };
 
-    res.json(userDetails)
+    res.json(userDetails);
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "User doesnot exist " });
+  }
+});
+
+
+
+userRouter.use(userAuth);
+
+userRouter.post('/follow/:username', async (req, res)=>{
+  try{
+    const findUser= await UserModel.findOne( {username: req.params.username})
+    if( findUser === null)
+      throw ' user doesnot exist finduser'
+
+    const currentUser = await UserModel.findOne({username: req.body.username})
+
+    currentUser.following.push( findUser._id)
+    currentUser.save()
+
+    findUser.followers.push(currentUser._id)
+    findUser.save()
+
+    res.json({message:'user followed'})
+    
   }catch(e)
   {
     console.log(e)
-    res.json({'message':'User doesnot exist '})
+    res.json({message: ' user does not exist '})
   }
 })
 
-userRouter.use(userAuth);
+
 userRouter.get("/feed", (req, res) => {
   res.json({ message: "display feed" });
 });
@@ -138,12 +165,6 @@ userRouter.get("/create", (req, res) => {
   res.json({ message: "send create page form" });
 });
 
-userRouter.use('/posts',userPostsRouter)
-
-
-
-
-
-
+userRouter.use("/posts", userPostsRouter);
 
 export default userRouter;
