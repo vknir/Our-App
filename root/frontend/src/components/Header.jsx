@@ -7,7 +7,25 @@ import "./Header.css";
 function Header() {
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
+   
+    const username = e.target[0].value;
+    const password = e.target[1].value;
+
+   
+    const loginResponse = await axios.post(
+      "https://our-app-7k9z.onrender.com/user/login",
+      {
+        username: username,
+        password: password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    console.log(loginResponse)
   };
 
   return (
