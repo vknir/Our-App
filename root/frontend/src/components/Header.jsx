@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faComment, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import "./Header.css";
 import { NavLink } from "react-router-dom";
@@ -29,7 +30,8 @@ function Header() {
         },
       }
     );
-    console.log(loginResponse)
+
+    if (loginResponse.data.status === 200) setLogin(true);
   };
 
   return (
@@ -41,22 +43,23 @@ function Header() {
       </div>
 
       <div className="right-section">
-        {
-          login ? 
+        {login ? (
           <div className="button-wrapper">
-            <FontAwesomeIcon icon={faSearch} />
-            <FontAwesomeIcon icon={faComment} />
-            <FontAwesomeIcon icon={faUser} />
-            <button className="clr-primary">Create Post</button>
-            <button className="clr-signout">Sign Out</button>
+            <FontAwesomeIcon icon={faSearch} color="white" />
+            <FontAwesomeIcon icon={faComment} color="white" />
+            <FontAwesomeIcon icon={faUser} color="white" />
+            <button className="clr-success">Create Post</button>
+            <button className="clr-signout" onClick={() => setLogin(false)}>
+              Sign Out
+            </button>
           </div>
-          :
+        ) : (
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Username"></input>
             <input type="password" placeholder="Password"></input>
             <button type="submit">Login</button>
           </form>
-        }
+        )}
       </div>
     </nav>
   );

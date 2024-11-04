@@ -1,0 +1,38 @@
+main{
+    padding-inline: 100px;
+    padding-block: 20px;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  
+    gap: .5rem;
+    width: 100vw;
+    .left-section{
+
+        max-width: 60%;
+        h1{
+            font-weight: 100;
+            font-size: 3.5rem;
+
+            color: var(--clr-signup-heading);
+        }
+
+    }
+
+    .right-section{
+        form{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap:1rem;
+            input{
+                min-width: 100%;
+            }
+
+        }
+
+        
+    }
+}

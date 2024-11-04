@@ -23,7 +23,7 @@ nav > .right-section > form {
   gap: 0.5rem;
 }
 
-.right-section > form > input {
+nav >.right-section > form > input {
   background-color: var(--clr-header-input-bckg);
   border: 0;
 
@@ -33,15 +33,14 @@ nav > .right-section > form {
   caret-color: white;
 
   border-radius: var(--border-radius);
-
-  
 }
 
-.right-section > form > button {
+nav >.right-section button {
   background-color: var(--clr-primary);
   border: 0;
 
   padding-inline: 10px;
+  padding-block: 5px;
   border-radius: var(--border-radius);
 
   color: white;
@@ -49,10 +48,30 @@ nav > .right-section > form {
   max-width: fit-content;
 }
 
-.right-section > form > button:hover {
+nav > .right-section button:hover {
   cursor: pointer;
-  background-color: var(--clr-primary-hover);
+  filter: brightness(150%);
   color: black;
+}
+
+nav > .right-section > .button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .clr-success {
+    background-color: var(--clr-success);
+  }
+
+  .clr-signout {
+    background-color: var(--clr-signout);
+  }
+  svg {
+    font-size: var(--fs-large);
+  }
+  svg :hover {
+    cursor: pointer;
+  }
 }
 
 @media (max-width: 768px) {
@@ -70,7 +89,16 @@ nav > .right-section > form {
     width: 100%;
   }
 
-  nav > .right-section >form >input{
+  nav > .right-section > form > input {
     width: 100%;
+  }
+
+  nav > .right-section {
+    .button-wrapper {
+      display: flex;
+      justify-content: center;
+
+      gap: 0.5rem;
+    }
   }
 }

@@ -71,17 +71,35 @@ h6 {
   --clr-header-bckg: #343434;
   --clr-primary: #0685cc;
   --clr-primary-hover:#66b9e9;
-  --clr-sucess: #18993f;
-
+  --clr-success: #18993f;
+  --clr-signout:#67757E;
   --clr-header-input-bckg:#4C4C4C;
+  --clr-footer-border:#B3B3B3;
+  --clr-signup-heading:#47484A;
 
   --fs-normal: 1rem;
   --fs-heading: 2rem;
   --fs-large: 1.5rem;
+  --fs-small:.6rem;
 
   --border-radius:5px;
 }
 
 body {
   font-family: sans-serif;
+  min-height: 100vh;
+
+  
 }
+
+#root{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  flex: 1;
+}
+
