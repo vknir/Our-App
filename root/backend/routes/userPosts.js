@@ -32,10 +32,10 @@ userPostsRouter.post("/create", async (req, res) => {
     currentUser.posts.push(currentPost._id);
     currentUser.save();
 
-    res.json({ message: "post added successfully" });
+    res.json({ message: "post added successfully",status:200 });
   } catch (e) {
     console.log(e);
-    res.json({ mesage: "Title or content not valid" });
+    res.json({ mesage: "Title or content not valid" ,status:401});
   }
 });
 
@@ -61,10 +61,10 @@ userPostsRouter.put("/:postid", async (req, res) => {
 
     if (postResponse === null) throw "no such posts exists";
 
-    res.json({ message: "post updated" });
+    res.json({ message: "post updated", status:200 });
   } catch (e) {
     console.log(e);
-    res.json({ message: "no such posts exists" });
+    res.json({ message: "no such posts exists" , status:401});
   }
 });
 
@@ -86,10 +86,10 @@ userPostsRouter.delete("/:postid", async (req, res) => {
 
     await PostsModel.findByIdAndDelete({ _id: currentPostID });
 
-    res.json({ message: "post deleted" });
+    res.json({ message: "post deleted", status:200 });
   } catch (e) {
     console.log(e);
-    res.json({ message: "no such posts exists" });
+    res.json({ message: "no such posts exists", status: 401 });
   }
 });
 

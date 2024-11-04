@@ -35,7 +35,7 @@ userRouter.post("/sign-up", async (req, res) => {
         }
       } catch (e) {
         console.log(e);
-        res.json({ message: "Unable to update DB" });
+        res.json({ message: "Unable to update DB", status: 401 });
       }
 
       if (hash) {
@@ -64,16 +64,17 @@ userRouter.post("/sign-up", async (req, res) => {
 
           res.json({
             token: token,
+            status: 200,
           });
         } catch (e) {
           console.log(e);
-          res.json({ message: "Username already in use hash" });
+          res.json({ message: "Username already in use hash", status: 401 });
         }
       }
     });
   } catch (e) {
     console.log(e);
-    res.json({ message: "Username already in use" });
+    res.json({ message: "Username already in use", status: 401 });
   }
 });
 
@@ -81,11 +82,10 @@ userRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-
-    const  inputValidator= z.object({
-      username:z.string(),
-      password:z.string(),
-    })
+    const inputValidator = z.object({
+      username: z.string(),
+      password: z.string(),
+    });
 
     inputValidator.parse({ username, password });
 
@@ -96,17 +96,17 @@ userRouter.post("/login", async (req, res) => {
         if (e) throw e;
         if (result) {
           const token = jwt.sign({ _id: findUser._id }, JWT_SECRET);
-          res.json({ token: token });
+          res.json({ token: token, status: 200 });
         } else {
-          res.status(401).json({ message: "invalid creds result" });
+          res.json({ message: "invalid creds result", status: 401 });
         }
       });
     } catch (e) {
-      res.status(401).json({ message: "Invalid credentails compare" });
+      res.json({ message: "Invalid credentails compare", status: 401 });
     }
   } catch (e) {
     console.log(e);
-    res.json({ message: "Invalid credentails" });
+    res.json({ message: "Invalid credentails", status: 401 });
   }
 });
 
@@ -125,44 +125,40 @@ userRouter.get("/:username", async (req, res) => {
     res.json(userDetails);
   } catch (e) {
     console.log(e);
-    res.json({ message: "User doesnot exist " });
+    res.json({ message: "User doesnot exist ", status: 401 });
   }
 });
-
-
 
 userRouter.use(userAuth);
 
-userRouter.post('/follow/:username', async (req, res)=>{
-  try{
-    const findUser= await UserModel.findOne( {username: req.params.username})
-    if( findUser === null)
-      throw ' user doesnot exist finduser'
+userRouter.post("/follow/:username", async (req, res) => {
+  try {
+    const findUser = await UserModel.findOne({ username: req.params.username });
+    if (findUser === null) throw " user doesnot exist finduser";
 
-    const currentUser = await UserModel.findOne({username: req.body.username})
+    const currentUser = await UserModel.findOne({
+      username: req.body.username,
+    });
 
-    currentUser.following.push( findUser._id)
-    currentUser.save()
+    currentUser.following.push(findUser._id);
+    currentUser.save();
 
-    findUser.followers.push(currentUser._id)
-    findUser.save()
+    findUser.followers.push(currentUser._id);
+    findUser.save();
 
-    res.json({message:'user followed'})
-    
-  }catch(e)
-  {
-    console.log(e)
-    res.json({message: ' user does not exist '})
+    res.json({ message: "user followed", status: 200 });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: " user does not exist ", status: 401 });
   }
-})
-
+});
 
 userRouter.get("/feed", (req, res) => {
-  res.json({ message: "display feed" });
+  res.json({ message: "display feed", status: 200 });
 });
 
 userRouter.get("/create", (req, res) => {
-  res.json({ message: "send create page form" });
+  res.json({ message: "send create page form", status: 200 });
 });
 
 userRouter.use("/posts", userPostsRouter);
