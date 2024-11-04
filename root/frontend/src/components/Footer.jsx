@@ -11,12 +11,12 @@ function Footer() {
         >
           Utkarsh Kumar
         </a>
-        <p>
-          Wanna test out a piece of code, chekout out{" "}
-          <a target="_blank" href="https://code-editor-vknir.netlify.app/">
-            Code Editor {"</>"}
-          </a>{" "}
-        </p>
+      </p>
+      <p>
+        Wanna test out a piece of code, chekout out{" "}
+        <a target="_blank" href="https://code-editor-vknir.netlify.app/">
+          Code Editor {"</>"}
+        </a>{" "}
       </p>
     </footer>
   );

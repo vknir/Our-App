@@ -4,5 +4,5 @@ footer{
     margin-top: 10px;
     
     border-top: 1px var(--clr-footer-border) solid;
-    padding-bottom: 30px;
+    padding: 20px;
 }
