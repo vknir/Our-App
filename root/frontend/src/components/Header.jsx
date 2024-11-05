@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import "./Header.css";
 import loginState from "../store/loginState.js";
 import loadingState from "../store/loadingState.js";
+import Loading from "./Loading.jsx";
 
 function Header() {
   const login = useRecoilValue(loginState);
@@ -42,10 +43,12 @@ function Header() {
 
   return (
     <>
-      <div className="loading">
-        {loading? <FontAwesomeIcon icon={faSpinner} />:<></>}
-      </div>
-      <nav>
+      {
+        loading?
+        <Loading/>
+      :<></>
+      }
+     <nav>
         <div className="left-section">
           <NavLink to="/">
             <p>OurApp</p>
