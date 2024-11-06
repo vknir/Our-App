@@ -3,9 +3,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faComment, faUser ,faSpinner} from "@fortawesome/free-solid-svg-icons";
 
-import "./Header.css";
+import "./style/Header.css";
 import { NavLink } from "react-router-dom";
-import "./Header.css";
+
 
 import Loading from "./Loading.jsx";
 
