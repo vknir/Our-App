@@ -19,7 +19,7 @@ async function userAuth(req, res, next) {
     next();
   } catch (e) {
     console.log(e);
-    res.json({ message: "Invalid token" });
+    res.json({ message: "Invalid token" ,status:404});
   }
 }
 

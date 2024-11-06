@@ -1,20 +1,23 @@
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faComment, faUser ,faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faComment,
+  faUser,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./style/Header.css";
 import { NavLink } from "react-router-dom";
 
-
 import Loading from "./Loading.jsx";
 
-import { loginState,loadingState } from "../store/atom.js";
+import { loginState, loadingState } from "../store/atom.js";
 
 function Header() {
-  
-  const [login, setLogin] =useRecoilState(loginState);
-  const [loading, setLoading]=useRecoilState(loadingState);
+  const [login, setLogin] = useRecoilState(loginState);
+  const [loading, setLoading] = useRecoilState(loadingState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,18 +39,23 @@ function Header() {
       }
     );
 
-    if (loginResponse.data.status === 200) setLogin(true);
+    if (loginResponse.data.status === 200){ 
+      localStorage.setItem('token', `${loginResponse.data.token}`)
+      setLogin(true);
+    }
     setLoading(false);
+  };
+
+  const handleClickSignOut = () => {
+    localStorage.removeItem("token");
+    setLogin(false);
   };
 
   return (
     <>
-      {
-        loading?
-        <Loading/>
-      :<></>
-      }
-     <nav>
+      {console.log("in header " + login)}
+      {loading ? <Loading /> : <></>}
+      <nav>
         <div className="left-section">
           <NavLink to="/">
             <p>OurApp</p>
@@ -61,7 +69,10 @@ function Header() {
               <FontAwesomeIcon icon={faComment} color="white" />
               <FontAwesomeIcon icon={faUser} color="white" />
               <button className="clr-success">Create Post</button>
-              <button className="clr-signout" onClick={() => setLogin(false)}>
+              <button
+                className="clr-signout"
+                onClick={() => handleClickSignOut()}
+              >
                 Sign Out
               </button>
             </div>
