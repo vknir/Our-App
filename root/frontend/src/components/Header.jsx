@@ -1,21 +1,20 @@
 import axios from "axios";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faComment, faUser ,faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 import "./Header.css";
 import { NavLink } from "react-router-dom";
 import "./Header.css";
-import loginState from "../store/loginState.js";
-import loadingState from "../store/loadingState.js";
+
 import Loading from "./Loading.jsx";
 
-function Header() {
-  const login = useRecoilValue(loginState);
-  const setLogin = useSetRecoilState(loginState);
+import { loginState,loadingState } from "../store/atom.js";
 
-  const loading = useRecoilValue(loadingState);
-  const setLoading = useSetRecoilState(loadingState);
+function Header() {
+  
+  const [login, setLogin] =useRecoilState(loginState);
+  const [loading, setLoading]=useRecoilState(loadingState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
