@@ -15,5 +15,3 @@ export const lengthState= atom({
     key:'length',
     default: true,
 })
-
-

@@ -59,7 +59,7 @@ function Header() {
 
   useEffect(()=>{
     async function checkLocalStorage() {
-       const loginResponse= await axios.get("https://our-app-7k9z.onrender.com/user/feed",{
+       const loginResponse= await axios.get("https://our-app-7k9z.onrender.com/user/exists",{
         headers:{
           Authorization: localStorage.getItem('token')
         }
