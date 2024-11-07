@@ -181,6 +181,19 @@ userRouter.get("/create", (req, res) => {
   res.json({ message: "send create page form", status: 200 });
 });
 
+userRouter.get('/exists', async (req, res)=>{
+  try{
+  const currentUser= await UserModel.findOne( {username: req.body.username})
+    if(currentUser === null)
+      throw 'user dose not exsit /exists'
+    res.json({message:'user exists',status:200})
+}catch(e)
+  {
+    res.json({message:'user does not exist /exists ', status:404})
+  }
+})
+
+
 userRouter.use("/posts", userPostsRouter);
 
 export default userRouter;
