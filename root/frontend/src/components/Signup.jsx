@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import axios from "axios";
 
 import "./style/Signup.css";
@@ -7,6 +7,7 @@ import "./style/Signup.css";
 import Loading from "./Loading";
 
 import { lengthState, loadingState, loginState } from "../store/atom";
+import Feed from "./Feed";
 
 function Signup() {
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -29,9 +30,7 @@ function Signup() {
     return () => window.removeEventListener("resize", checkLength);
   }, [length]);
 
- 
-
-  async function handleClick(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     setLoading(true);
@@ -58,68 +57,70 @@ function Signup() {
 
   return (
     <>
-     
-
       {loading ? <Loading /> : <></>}
       <main>
-        <>
-          <div className="signup-left-section">
-            {length ? (
-              <>
-                <h1>Remember Writing?</h1>
-                <p>
-                  Are you sick of short tweets and impersonal "shared" posts
-                  that are reminiscent of the late 90's email forwards? We
-                  believe getting back to actually writing is the key to
-                  enjoying the internet again.
-                </p>
-              </>
-            ) : (
-              <>
-                <p>Sign Up!</p>
-                <p></p>
-              </>
-            )}
-          </div>
-          <div className="signup-right-section">
-            <form onSubmit={handleClick}>
-              <div>
-                <label htmlFor="Username">Username</label>
-                <input
-                  onChange={(event) => {
-                    setUserName(event.target.value);
-                  }}
-                  id="Username"
-                  placeholder="Username"
-                  type="text"
-                ></input>
-              </div>
-              <div>
-                <label htmlFor="Email">Email</label>
-                <input
-                  id="Email"
-                  placeholder="you@example.com"
-                  type="text"
-                  onChange={(event) => {
-                    setEmail(event.target.value);
-                  }}
-                ></input>
-              </div>
-              <div>
-                <label htmlFor="Password">Password</label>
-                <input
-                  id="Password"
-                  placeholder="Create a password"
-                  type="password"
-                  onChange={(event) => {
-                    setPassword(event.target.value);
-                  }}
-                ></input>
-              </div>
-              <button>Signup for OurApp</button>
-            </form>
-          </div>
-        </>
+        {login ? (
+          <Feed />
+        ) : (
+          <>
+            <div className="signup-left-section">
+              {length ? (
+                <>
+                  <h1>Remember Writing?</h1>
+                  <p>
+                    Are you sick of short tweets and impersonal "shared" posts
+                    that are reminiscent of the late 90's email forwards? We
+                    believe getting back to actually writing is the key to
+                    enjoying the internet again.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>Sign Up!</p>
+                  <p></p>
+                </>
+              )}
+            </div>
+            <div className="signup-right-section">
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label htmlFor="Username">Username</label>
+                  <input
+                    onChange={(event) => {
+                      setUserName(event.target.value);
+                    }}
+                    id="Username"
+                    placeholder="Username"
+                    type="text"
+                  ></input>
+                </div>
+                <div>
+                  <label htmlFor="Email">Email</label>
+                  <input
+                    id="Email"
+                    placeholder="you@example.com"
+                    type="text"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
+                  ></input>
+                </div>
+                <div>
+                  <label htmlFor="Password">Password</label>
+                  <input
+                    id="Password"
+                    placeholder="Create a password"
+                    type="password"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                  ></input>
+                </div>
+                <button>Signup for OurApp</button>
+              </form>
+            </div>
+          </>
+        )}
       </main>
     </>
   );

@@ -44,6 +44,11 @@ function Header() {
       localStorage.setItem("token", `${loginResponse.data.token}`);
       setLogin(true);
     }
+    else{
+      alert('Invalid credentials')
+      e.target[0].value='';
+      e.target[1].value='';
+    }
     setLoading(false);
   };
 
@@ -59,14 +64,17 @@ function Header() {
           Authorization: localStorage.getItem('token')
         }
        })
-       console.log(loginResponse)
+      
        if(loginResponse.data.status === 200)
        {
         setLogin(true)
        }
+      setLoading(false) 
     }
 
     checkLocalStorage();
+    setLoading(true)
+   
   },[])
 
   return (

@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true },
-  posts: { type: Array },
+  posts: [ { type: mongoose.Schema.Types.ObjectId, ref:'Posts'}],
   pfp: { type: String },
   followers: { type: Array },
   following: { type: Array },
@@ -14,7 +14,7 @@ const PostSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   date: { type: Date, required: true },
-  userId: { type: Object },
+  userId: { type: Object , ref:'Users'},
   edited: { type: Boolean },
 });
 

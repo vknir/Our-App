@@ -4,10 +4,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 
-import { UserModel } from "../db.js";
+import { UserModel, PostsModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import userAuth from "../middleware/userAuth.js";
 import userPostsRouter from "../routes/userPosts.js";
+import mongoose, { Types } from "mongoose";
 
 const userRouter = express.Router();
 
@@ -153,8 +154,27 @@ userRouter.post("/follow/:username", async (req, res) => {
   }
 });
 
-userRouter.get("/feed", (req, res) => {
-  res.json({ message: "display feed", status: 200 });
+userRouter.get("/feed", async (req, res) => {
+  const currentUserId = new mongoose.Types.ObjectId(req.body._id);
+  const currentUser = await UserModel.findById(currentUserId);
+
+  const findPosts = currentUser.following.map(async (follow) => {
+    const response = await UserModel.findById(
+      new mongoose.Types.ObjectId(follow)
+    ).populate("posts");
+
+    return response.posts;
+  });
+  let feed = [];
+  const followersPost = await Promise.all(findPosts);
+
+  followersPost.forEach((follower) => {
+    follower.forEach((post) => {
+      feed.push(post);
+    });
+  });
+  
+  res.json({feed:feed, status: 200 });
 });
 
 userRouter.get("/create", (req, res) => {
