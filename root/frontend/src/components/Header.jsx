@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import Loading from "./Loading.jsx";
 
 import { loginState, loadingState } from "../store/atom.js";
+import { useEffect } from "react";
 
 function Header() {
   const [login, setLogin] = useRecoilState(loginState);
@@ -39,8 +40,8 @@ function Header() {
       }
     );
 
-    if (loginResponse.data.status === 200){ 
-      localStorage.setItem('token', `${loginResponse.data.token}`)
+    if (loginResponse.data.status === 200) {
+      localStorage.setItem("token", `${loginResponse.data.token}`);
       setLogin(true);
     }
     setLoading(false);
@@ -51,9 +52,26 @@ function Header() {
     setLogin(false);
   };
 
+  useEffect(()=>{
+    async function checkLocalStorage() {
+       const loginResponse= await axios.get("https://our-app-7k9z.onrender.com/user/feed",{
+        headers:{
+          Authorization: localStorage.getItem('token')
+        }
+       })
+       console.log(loginResponse)
+       if(loginResponse.data.status === 200)
+       {
+        setLogin(true)
+       }
+    }
+
+    checkLocalStorage();
+  },[])
+
   return (
     <>
-      {console.log("in header " + login)}
+     
       {loading ? <Loading /> : <></>}
       <nav>
         <div className="left-section">

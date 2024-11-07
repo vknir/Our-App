@@ -29,22 +29,7 @@ function Signup() {
     return () => window.removeEventListener("resize", checkLength);
   }, [length]);
 
-  useEffect(() => {
-    async function checkLocalStorage(){
-        if( localStorage.getItem('token') !=null)
-        {
-          const loginResponse = axios.get( "https://our-app-7k9z.onrender.com/user/feed",{
-            headers:{
-              Authorization:localStorage.getItem('token')
-            }
-          })
-          console.log(loginResponse)
-        }
-    }
-      window.addEventListener('storage', checkLocalStorage)
-    
-     return ()=> window.removeEventListener('storage', checkLocalStorage)
-  }, []);
+ 
 
   async function handleClick(e) {
     e.preventDefault();
@@ -73,7 +58,7 @@ function Signup() {
 
   return (
     <>
-      {console.log("in signup " + login)}
+     
 
       {loading ? <Loading /> : <></>}
       <main>

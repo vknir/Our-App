@@ -110,7 +110,7 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get("/:username", async (req, res) => {
+userRouter.get("/profile/:username", async (req, res) => {
   try {
     const findUser = await UserModel.findOne({ username: req.params.username });
     if (findUser === null) throw "user does not exist find user";
