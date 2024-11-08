@@ -19,15 +19,15 @@ function Feed() {
       }
     );
 
-    return new Promise ( (resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       resolve(loginResponse);
-    })
+    });
   }
 
   useEffect(() => {
     setLoading(true);
 
-    checkFeed().then( p=>console.log(p));
+    checkFeed()
 
     setLoading(false);
   }, []);

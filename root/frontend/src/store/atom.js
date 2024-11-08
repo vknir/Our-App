@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, atomFamily } from "recoil";
 
 export const loadingState= atom({
     key:'loading',
@@ -15,3 +15,4 @@ export const lengthState= atom({
     key:'length',
     default: true,
 })
+
