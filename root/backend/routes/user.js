@@ -158,21 +158,8 @@ userRouter.get("/feed", async (req, res) => {
   const currentUserId = new mongoose.Types.ObjectId(req.body._id);
   const currentUser = await UserModel.findById(currentUserId);
 
-  const findPosts = currentUser.following.map(async (follow) => {
-    const response = await UserModel.findById(
-      new mongoose.Types.ObjectId(follow)
-    ).populate("posts");
-
-    return response.posts;
-  });
-  let feed = [];
-  const followersPost = await Promise.all(findPosts);
-
-  followersPost.forEach((follower) => {
-    follower.forEach((post) => {
-      feed.push(post);
-    });
-  });
+  
+  const feed = currentUser.following
   
   res.json({feed:feed, status: 200 });
 });

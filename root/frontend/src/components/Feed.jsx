@@ -4,6 +4,7 @@ import axios from "axios";
 import Loading from "./Loading";
 import { loadingState } from "../store/atom";
 import { useEffect } from "react";
+import { check } from "express-validator";
 
 function Feed() {
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -18,21 +19,20 @@ function Feed() {
       }
     );
 
-    
-    return loginResponse;   
+    return new Promise ( (resolve, reject)=>{
+      resolve(loginResponse);
+    })
   }
 
   useEffect(() => {
-    setLoading(true)
-    const loginResponse =  checkFeed();
-    loginResponse.then(p => console.log(p))
-    // console.log(feed)
-    setLoading(false)
+    setLoading(true);
+
+    checkFeed().then( p=>console.log(p));
+
+    setLoading(false);
   }, []);
 
-  return <>
-    {loading ? <Loading/> : <></>}
-  </>;
+  return <>{loading ? <Loading /> : <></>}</>;
 }
 
 export default Feed;
