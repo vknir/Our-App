@@ -1,38 +1,39 @@
-import { useRecoilState } from "recoil";
 import axios from "axios";
+import { useEffect, Suspense  } from "react";
+import { useRecoilState } from "recoil";
 
-import Loading from "./Loading";
-import { loadingState } from "../store/atom";
-import { useEffect } from "react";
-import { check } from "express-validator";
 
-function Feed() {
-  const [loading, setLoading] = useRecoilState(loadingState);
+import { feedStateFamily, postIdState } from "../store/atom";
+import Loading from './Loading'
 
-  async function checkFeed() {
-    const loginResponse = await axios.get(
-      "https://our-app-7k9z.onrender.com/user/feed",
-      {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
+function Posts({_id})
+{
+ 
+  const [feed, setFeed] = useRecoilState(feedStateFamily(_id))
+ 
+  return <Suspense fallback={<Loading/>}>
+    <li>{'kaka'}</li>
+  </Suspense>
+  
+}
+
+function Feed()
+// 
+
+{
+
+  const [postId, setPostId]=useRecoilState(postIdState)
+
+  useEffect(()=>{
+    axios.get('https://our-app-7k9z.onrender.com/user/feed',{
+      headers:{
+        Authorization:localStorage.getItem('token')
       }
-    );
+    })
+    .then(p=> setPostId(p.data.feed))
+  },[])
 
-    return new Promise((resolve, reject) => {
-      resolve(loginResponse);
-    });
-  }
-
-  useEffect(() => {
-    setLoading(true);
-
-    checkFeed()
-
-    setLoading(false);
-  }, []);
-
-  return <>{loading ? <Loading /> : <></>}</>;
+  return <>{postId.map((item)=><Posts key={item} _id={item}/>)}</>
 }
 
 export default Feed;
