@@ -36,7 +36,12 @@ export const feedStateFamily = atomFamily({
             }
           }
         );
-        return res.data;
+        if (res.error) {
+          throw response.error;
+        }
+        
+        // console.log(res.data.post)
+        return res.data.post;
       },
   }),
 });
