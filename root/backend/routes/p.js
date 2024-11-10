@@ -1,8 +1,9 @@
-import { Router } from "express";
+import express from "express";
+import mongoose from "mongoose";
 
 import { PostsModel } from "../db.js";
 
-const pRouter = Router();
+const pRouter = express.Router();
 
 pRouter.get("/:postid", async (req, res) => {
   try {
@@ -13,7 +14,7 @@ pRouter.get("/:postid", async (req, res) => {
     res.json({ post: currentPost, status: 200 });
   } catch (e) {
     console.log(e);
-    res.josn({ message: "Posts does not exist", status: 404 });
+    res.json({ message: "Posts does not exist", status: 404 });
   }
 });
 
