@@ -130,6 +130,20 @@ userRouter.get("/profile/:username", async (req, res) => {
   }
 });
 
+userRouter.get('/info/:userid', async (req, res)=>{
+  const  userID= new mongoose.Types.ObjectId( req.params.userid);
+  const currentUser = await UserModel.findById(userID);
+
+  const response={
+    username:currentUser.username,
+    _id: currentUser._id,
+    pfp:currentUser.pfp
+  }
+
+  res.json({message:response}).status(200)
+
+
+})
 userRouter.use(userAuth);
 
 userRouter.post("/follow/:username", async (req, res) => {

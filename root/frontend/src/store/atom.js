@@ -45,10 +45,12 @@ export const feedStateFamily = atomFamily({
             }
           }
         );
+        
         if (res.error) {
           throw response.error;
         }
         
+        const userProfile = await axios.get('https://our-app-7k9z.onrender.com/profile/')
         console.log(res.data.post)
         return res.data.post;
       },
