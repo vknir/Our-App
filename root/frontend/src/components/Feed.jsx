@@ -3,14 +3,12 @@ import { useEffect, Suspense } from "react";
 import { useRecoilState } from "recoil";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { feedStateFamily, postIdState } from "../store/atom";
+import { postIdState } from "../store/atom";
 import Loading from "./Loading";
 import Posts from "./Posts";
 import "./style/Feed.css";
 
 function Feed() {
-  //
-
   const [postId, setPostId] = useRecoilState(postIdState);
 
   useEffect(() => {

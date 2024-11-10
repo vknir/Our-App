@@ -49,7 +49,7 @@ export const feedStateFamily = atomFamily({
           throw response.error;
         }
         
-        // console.log(res.data.post)
+        console.log(res.data.post)
         return res.data.post;
       },
   }),
