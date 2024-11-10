@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { PostsModel } from "../db";
+import { PostsModel } from "../db.js";
 
 const pRouter = Router();
 

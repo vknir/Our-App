@@ -6,7 +6,6 @@ import userRouter from "../backend/routes/user.js";
 import pRouter from "./routes/p.js";
 import { MONGO_URL } from "../backend/config.js";
 
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -21,7 +20,7 @@ main();
 
 app.use(cors());
 app.use("/user", userRouter);
-app.use('/p',pRouter)
+app.use("/p", pRouter);
 app.get("/", (req, res) => {
   res.json({ message: "setup corn job" });
 });
