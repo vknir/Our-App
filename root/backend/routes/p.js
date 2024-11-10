@@ -1,14 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import { PostsModel } from "../db.js";
+import { PostsModel, UserModel } from "../db.js";
 
 const pRouter = express.Router();
 
 pRouter.get("/:postid", async (req, res) => {
   try {
     const currentPostId = new mongoose.Types.ObjectId(req.params.postid);
-    const currentPost = await PostsModel.findById(currentPostId).populate('userId');
+    const currentPost = await PostsModel.findById(currentPostId)  
+      
 
     if (currentPost == null) throw "Post does not exist ";
     res.json({ post: currentPost, status: 200 });
