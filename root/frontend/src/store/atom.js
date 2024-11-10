@@ -29,7 +29,7 @@ export const feedStateFamily = atomFamily({
       (_id) =>
       async ({ get }) => {
         const res = await axios.get(
-          `https://our-app-7k9z.onrender.com/user/posts/${_id}`,
+          `https://our-app-7k9z.onrender.com/p/${_id}`,
           {
             headers:{
                 Authorization:localStorage.getItem('token')
