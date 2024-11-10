@@ -1,4 +1,4 @@
-main {
+.signup-wrapper {
   padding-inline: 100px;
   padding-block: 20px;
 
@@ -10,7 +10,7 @@ main {
   width: 100vw;
   .signup-left-section {
     max-width: 60%;
-    
+
     text-align: left;
     h1 {
       font-weight: 100;
@@ -19,12 +19,9 @@ main {
       color: var(--clr-signup-heading);
       margin-bottom: 10px;
     }
-    
   }
 
   .signup-right-section {
-    
-
     form {
       display: flex;
       flex-direction: column;
@@ -39,7 +36,7 @@ main {
         margin-top: 5px;
       }
 
-      button{
+      button {
         background-color: var(--clr-success);
         border: 0;
         border-radius: var(--border-radius);
@@ -48,7 +45,7 @@ main {
         color: white;
       }
 
-      button:hover{
+      button:hover {
         color: black;
         filter: brightness(130%);
         cursor: pointer;
@@ -57,20 +54,19 @@ main {
   }
 }
 
-@media(max-width: 768px){
-    main{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+@media (max-width: 768px) {
+  .signup-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
-    .signup-left-section{
-       
-        p{
-            color: var(--clr-signup-heading);
-            
-            font-weight: 100;
-            font-size: 2rem;
-        }
+  .signup-left-section {
+    p {
+      color: var(--clr-signup-heading);
+
+      font-weight: 100;
+      font-size: 2rem;
     }
+  }
 }

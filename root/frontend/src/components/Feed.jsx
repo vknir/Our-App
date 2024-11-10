@@ -5,16 +5,8 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { feedStateFamily, postIdState } from "../store/atom";
 import Loading from "./Loading";
-
-function Posts({ _id }) {
-  const [feed, setFeed] = useRecoilState(feedStateFamily(_id))
-
-  return (
-    <div>{feed.title}
-    {feed.content}
-    </div>
-  );
-}
+import Posts from "./Posts";
+import "./style/Feed.css";
 
 function Feed() {
   //
@@ -32,11 +24,39 @@ function Feed() {
   }, []);
 
   return (
-    <ErrorBoundary fallback={ <Loading/>}>
-      <Suspense fallback={<div>Loading...</div>}>
-       <>{  postId.map((item)=> <Posts key={item} _id={item}/>)}</>
-      </Suspense>
-    </ErrorBoundary>
+    <main>
+      <div className="feed-content">
+        {postId.length > 0 ? (
+          <ErrorBoundary fallback={<div>Error </div>}>
+            <Suspense fallback={<Loading />}>
+              <div className="non-zero-following">
+                <p>Latest from those you Follow</p>
+                <ul>
+                  {postId.map((item) => (
+                    <Posts key={item} _id={item} />
+                  ))}
+                </ul>
+              </div>
+            </Suspense>
+          </ErrorBoundary>
+        ) : (
+          <>
+            <div className="zero-following">
+              <div className="zero-following-header">
+                Hello <span>{localStorage.getItem("username")}</span>, your feed
+                is empty.
+              </div>
+              <p>
+                Your feed displays the latest posts from the people you follow.
+                If you don't have any friends to follow that's okay; you can use
+                the "Search" feature in the top menu bar to find content written
+                by people with similar interests and then follow them.
+              </p>
+            </div>
+          </>
+        )}
+      </div>
+    </main>
   );
 }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { atom, atomFamily, selectorFamily } from "recoil";
+import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
 export const loadingState = atom({
   key: "loading",
@@ -19,6 +19,15 @@ export const lengthState = atom({
 export const postIdState=atom({
   key:'postId',
   default:[]
+})
+
+
+
+export const currentUser= selector({
+  key:'CurrentUserInfo',
+  get: async ({get})=>{
+    const response = await axios.get('https://our-app-7k9z.onrender.com/user/')
+  }
 })
 
 export const feedStateFamily = atomFamily({

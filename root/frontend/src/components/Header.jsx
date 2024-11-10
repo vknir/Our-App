@@ -19,6 +19,7 @@ import { useEffect } from "react";
 function Header() {
   const [login, setLogin] = useRecoilState(loginState);
   const [loading, setLoading] = useRecoilState(loadingState);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +43,7 @@ function Header() {
 
     if (loginResponse.data.status === 200) {
       localStorage.setItem("token", `${loginResponse.data.token}`);
+      localStorage.setItem('username', `${username}`)
       setLogin(true);
     }
     else{
@@ -53,7 +55,8 @@ function Header() {
   };
 
   const handleClickSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
+   
     setLogin(false);
   };
 

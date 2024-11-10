@@ -51,6 +51,7 @@ function Signup() {
     if (loginResponse.data.status === 200) {
       setLogin(true);
       localStorage.setItem("token", `${loginResponse.data.token}`);
+      localStorage.setItem("username", username);
     }
     setLoading(false);
   }
@@ -58,11 +59,12 @@ function Signup() {
   return (
     <>
       {loading ? <Loading /> : <></>}
-      <main>
-        {login ? (
-          <Feed />
-        ) : (
-          <>
+
+      {login ? (
+        <Feed />
+      ) : (
+        <main>
+          <div className="signup-wrapper">
             <div className="signup-left-section">
               {length ? (
                 <>
@@ -119,9 +121,9 @@ function Signup() {
                 <button>Signup for OurApp</button>
               </form>
             </div>
-          </>
-        )}
-      </main>
+          </div>
+        </main>
+      )}
     </>
   );
 }

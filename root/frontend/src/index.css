@@ -12,7 +12,7 @@
 
 body {
   /* 3. Add accessible line-height */
-  line-height: 1.2;
+  line-height: 1.3;
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
 }
@@ -76,6 +76,7 @@ h6 {
   --clr-header-input-bckg:#4C4C4C;
   --clr-footer-border:#B3B3B3;
   --clr-signup-heading:#47484A;
+  --clr-feed-zero-following:#A5A5A5;
 
   --fs-normal: 1rem;
   --fs-heading: 2rem;
@@ -99,7 +100,9 @@ body {
   justify-content: space-between;
 }
 
-main {
-  flex: 1;
+main{
+  
+  width: 100vw;
+  min-height: 100%;
 }
 
