@@ -3,6 +3,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
+import { getSHA256Hash } from "boring-webcrypto-sha256";
 
 import { UserModel, PostsModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
@@ -29,6 +30,9 @@ userRouter.post("/sign-up", async (req, res) => {
   try {
     inputValidator.parse({ username, password, email });
 
+    const gravatarHash=getSHA256Hash(email);
+    const gravatarURL = `https://www.gravatar.com/avatar/${gravatarHash}`
+
     bcrypt.hash(password, 3, async (err, hash) => {
       try {
         if (err) {
@@ -46,7 +50,7 @@ userRouter.post("/sign-up", async (req, res) => {
           password: hash,
           followers: [],
           following: [],
-          pfp: "",
+          pfp: `${gravatarURL}`,
           posts: [],
         };
         try {

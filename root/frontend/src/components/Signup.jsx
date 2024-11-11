@@ -103,7 +103,8 @@ function Signup() {
                     placeholder="you@example.com"
                     type="text"
                     onChange={(event) => {
-                      setEmail(event.target.value);
+                      const email =event.target.value.trim().toLowerCase(); 
+                      setEmail(email);
                     }}
                   ></input>
                 </div>

@@ -1,0 +1,21 @@
+.posts{
+    font-size:  var(--fs-normal);
+    text-align: left;
+    
+    p span{
+        font-weight: 700;
+    };
+
+    padding: 10px;
+    border: 1px solid var(--clr-footer-border);
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+
+    box-shadow: 2px 1px var(--clr-footer-border);
+}
+
+.posts:hover{
+    border: 1px solid var(--clr-posts-border);
+    box-shadow: 1px 1px var(--clr-posts-border);
+}
+

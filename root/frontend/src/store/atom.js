@@ -37,22 +37,28 @@ export const feedStateFamily = atomFamily({
     get:
       (_id) =>
       async ({ get }) => {
-        const res = await axios.get(
+        const currentPost = await axios.get(
           `https://our-app-7k9z.onrender.com/p/${_id}`,
           {
-            headers:{
-                Authorization:localStorage.getItem('token')
+            headers:{currentPostAuthorization:localStorage.getItem('token')
             }
           }
         );
         
-        if (res.error) {
-          throw response.error;
+        if (currentPost.error) {
+          throw currentPost.error;
         }
         
-        const userProfile = await axios.get('https://our-app-7k9z.onrender.com/profile/')
-        console.log(res.data.post)
-        return res.data.post;
+        const userProfile = await axios.get(`https://our-app-7k9z.onrender.com/user/info/${currentPost.data.post.userId}`)
+        // console.log(res.data.post)
+        // console.log(userProfile.data.message)
+
+        const res = {
+          postInfo: currentPost.data.post,
+          userInfo: userProfile.data.message
+        }
+        
+        return res;
       },
   }),
 });

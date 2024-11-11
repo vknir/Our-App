@@ -77,6 +77,8 @@ h6 {
   --clr-footer-border:#B3B3B3;
   --clr-signup-heading:#47484A;
   --clr-feed-zero-following:#A5A5A5;
+  --clr-posts-border:rgb(4 47 46);
+
 
   --fs-normal: 1rem;
   --fs-heading: 2rem;

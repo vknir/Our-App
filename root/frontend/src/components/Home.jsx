@@ -6,9 +6,9 @@ function Home() {
   return (
     <>
       <Header />
-     
-        <Signup />
-      
+
+      <Signup />
+
       <Footer />
     </>
   );

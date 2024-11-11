@@ -28,12 +28,12 @@ function Feed() {
           <ErrorBoundary fallback={<div>Error </div>}>
             <Suspense fallback={<Loading />}>
               <div className="non-zero-following">
-                <p>Latest from those you Follow</p>
-                <ul>
+                <p className="heading">Latest from those you Follow</p>
+                <div className="posts-wrapper">
                   {postId.map((item) => (
                     <Posts key={item} _id={item} />
                   ))}
-                </ul>
+                </div>
               </div>
             </Suspense>
           </ErrorBoundary>

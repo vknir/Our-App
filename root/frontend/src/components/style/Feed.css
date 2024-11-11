@@ -1,4 +1,7 @@
 .feed-content {
+  
+  
+
   .zero-following {
     padding-inline: 200px;
     padding-block: 20px;
@@ -29,17 +32,24 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    
+    justify-content: center;
+    align-items: center;
 
     min-height: 100%;
-    p {
+    .heading{
       font-size: var(--fs-heading);
-      margin-bottom: 20px;
     }
 
-    ul{
-      margin-bottom: 10rem;
+    
+
+    .posts-wrapper{
+      margin-top: 2%;
+      font-size:  var(--fs-small);
+      max-width: 300px;
+      a{
+        color: inherit;
+        text-decoration: none;
+      }
     }
   }
 }
