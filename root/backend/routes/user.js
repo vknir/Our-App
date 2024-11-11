@@ -30,7 +30,7 @@ userRouter.post("/sign-up", async (req, res) => {
   try {
     inputValidator.parse({ username, password, email });
 
-    const gravatarHash=getSHA256Hash(email);
+    const gravatarHash=await getSHA256Hash(email);
     const gravatarURL = `https://www.gravatar.com/avatar/${gravatarHash}`
 
     bcrypt.hash(password, 3, async (err, hash) => {
