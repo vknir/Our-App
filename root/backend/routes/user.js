@@ -3,6 +3,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
+import{ createHash } from 'crypto';
 
 
 import { UserModel, PostsModel } from "../db.js";
@@ -14,6 +15,8 @@ import mongoose, { Types } from "mongoose";
 const userRouter = express.Router();
 
 userRouter.use(bodyParser.urlencoded({ extended: false }));
+
+
 
 const inputValidator = z.object({
   username: z
@@ -42,6 +45,9 @@ userRouter.post("/sign-up", async (req, res) => {
         res.json({ message: "Unable to update DB", status: 401 });
       }
 
+      const gravatarHash = createHash('sha256').update(email).digest('hex');
+      const gravatarURL= `https://www.gravatar.com/avatar/${gravatarHash}`
+
       if (hash) {
         const newUser = {
           username: username,
@@ -49,7 +55,7 @@ userRouter.post("/sign-up", async (req, res) => {
           password: hash,
           followers: [],
           following: [],
-          pfp: `{}`,
+          pfp: `${gravatarURL}`,
           posts: [],
         };
         try {
