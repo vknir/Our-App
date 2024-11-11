@@ -13,12 +13,13 @@ import { NavLink } from "react-router-dom";
 
 import Loading from "./Loading.jsx";
 
-import { loginState, loadingState } from "../store/atom.js";
+import { loginState, loadingState, currentUserState } from "../store/atom.js";
 import { useEffect } from "react";
 
 function Header() {
   const [login, setLogin] = useRecoilState(loginState);
   const [loading, setLoading] = useRecoilState(loadingState);
+  const [currentUser, setCurrentUser]= useRecoilState(currentUserState)
   
 
   const handleSubmit = async (e) => {
@@ -71,10 +72,11 @@ function Header() {
        if(loginResponse.data.status === 200)
        {
         setLogin(true)
+        // console.log(currentUser)
        }
       setLoading(false) 
     }
-
+    
     checkLocalStorage();
     setLoading(true)
    
@@ -96,7 +98,7 @@ function Header() {
             <div className="button-wrapper">
               <FontAwesomeIcon icon={faSearch} color="white" />
               <FontAwesomeIcon icon={faComment} color="white" />
-              <FontAwesomeIcon icon={faUser} color="white" />
+              {login?<img src={`${currentUser}`}></img> : <FontAwesomeIcon icon={faUser} color="white" />}
               <button className="clr-success">Create Post</button>
               <button
                 className="clr-signout"

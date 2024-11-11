@@ -23,10 +23,17 @@ export const postIdState=atom({
 
 
 
-export const currentUser= selector({
+export const currentUserState= selector({
   key:'CurrentUserInfo',
   get: async ({get})=>{
-    const response = await axios.get('https://our-app-7k9z.onrender.com/user/')
+    const username= localStorage.getItem('username')
+    if( username != null){
+    const response = await axios.get(`https://our-app-7k9z.onrender.com/user/info/${username}`)
+    
+    return response.data
+    }else{
+      return null;
+    }
   }
 })
 

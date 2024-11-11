@@ -142,7 +142,8 @@ userRouter.get("/profile/:username", async (req, res) => {
 userRouter.get('/info/:userid', async (req, res)=>{
   const  userID= new mongoose.Types.ObjectId( req.params.userid);
   const currentUser = await UserModel.findById(userID);
-
+  if( currentUser == null)
+    res.json({message:'Error user doen not exist'})
   const response={
     username:currentUser.username,
     _id: currentUser._id,
