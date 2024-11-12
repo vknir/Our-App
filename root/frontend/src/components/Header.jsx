@@ -7,6 +7,8 @@ import {
   faUser,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+import { ErrorBoundary } from "react-error-boundary";
+import { Suspense } from "react";
 
 import "./style/Header.css";
 import { NavLink } from "react-router-dom";
@@ -19,8 +21,7 @@ import { useEffect } from "react";
 function Header() {
   const [login, setLogin] = useRecoilState(loginState);
   const [loading, setLoading] = useRecoilState(loadingState);
-  const [currentUser, setCurrentUser]= useRecoilState(currentUserState)
-  
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,47 +45,59 @@ function Header() {
 
     if (loginResponse.data.status === 200) {
       localStorage.setItem("token", `${loginResponse.data.token}`);
-      localStorage.setItem('username', `${username}`)
+      localStorage.setItem("username", `${username}`);
       setLogin(true);
-    }
-    else{
-      alert('Invalid credentials')
-      e.target[0].value='';
-      e.target[1].value='';
+      const response = await axios.get(
+        `https://our-app-7k9z.onrender.com/user/profile/${localStorage.getItem(
+          "username"
+        )}`
+      );
+      
+      setCurrentUser(response.data);
+    } else {
+      alert("Invalid credentials");
+      e.target[0].value = "";
+      e.target[1].value = "";
     }
     setLoading(false);
   };
 
   const handleClickSignOut = () => {
     localStorage.clear();
-   
+
     setLogin(false);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     async function checkLocalStorage() {
-       const loginResponse= await axios.get("https://our-app-7k9z.onrender.com/user/exists",{
-        headers:{
-          Authorization: localStorage.getItem('token')
+      const loginResponse = await axios.get(
+        "https://our-app-7k9z.onrender.com/user/exists",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         }
-       })
-      
-       if(loginResponse.data.status === 200)
-       {
-        setLogin(true)
-        // console.log(currentUser)
-       }
-      setLoading(false) 
+      );
+
+      if (loginResponse.data.status === 200) {
+        setLogin(true);
+        const response = await axios.get(
+          `https://our-app-7k9z.onrender.com/user/profile/${localStorage.getItem(
+            "username"
+          )}`
+        );
+        
+        setCurrentUser(response.data);
+      }
+      setLoading(false);
     }
-    
+
     checkLocalStorage();
-    setLoading(true)
-   
-  },[])
+    setLoading(true);
+  }, []);
 
   return (
     <>
-     
       {loading ? <Loading /> : <></>}
       <nav>
         <div className="left-section">
@@ -98,7 +111,17 @@ function Header() {
             <div className="button-wrapper">
               <FontAwesomeIcon icon={faSearch} color="white" />
               <FontAwesomeIcon icon={faComment} color="white" />
-              {login?<img src={`${currentUser}`}></img> : <FontAwesomeIcon icon={faUser} color="white" />}
+              {login ? (
+                <ErrorBoundary>
+                  <Suspense
+                    fallback={<FontAwesomeIcon icon={faUser} color="white" />}
+                  >
+                    <img title={currentUser.username} className="pfp" src={currentUser.pfp}></img>
+                  </Suspense>
+                </ErrorBoundary>
+              ) : (
+                <FontAwesomeIcon icon={faUser} color="white" />
+              )}
               <button className="clr-success">Create Post</button>
               <button
                 className="clr-signout"

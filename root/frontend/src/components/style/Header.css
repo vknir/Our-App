@@ -73,6 +73,17 @@ nav > .right-section > .button-wrapper {
   svg :hover {
     cursor: pointer;
   }
+
+  .pfp{
+      height: var(--fs-heading);
+      border-radius: 50%;
+  }
+
+  .pfp:hover{
+    
+    cursor: pointer;
+    border: 2px solid white;
+  }
 }
 
 @media (max-width: 768px) {
