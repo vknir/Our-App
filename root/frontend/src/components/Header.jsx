@@ -129,12 +129,14 @@ function Header() {
               <NavLink to="/create">
                 <button className="clr-success">Create Post</button>
               </NavLink>
-              <button
-                className="clr-signout"
-                onClick={() => handleClickSignOut()}
-              >
-                Sign Out
-              </button>
+              <NavLink to="/">
+                <button
+                  className="clr-signout"
+                  onClick={() => handleClickSignOut()}
+                >
+                  Sign Out
+                </button>
+              </NavLink>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>

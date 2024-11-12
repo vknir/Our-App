@@ -1,0 +1,39 @@
+.create-post{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    padding-inline: 100px;
+    
+    label{
+        margin-bottom: 5px;
+    }
+    input,textarea{
+        margin-bottom: 1rem;
+        border: 1px solid var(--clr-footer-border);
+        padding: 10px;
+        border-radius: var(--border-radius);
+    }
+
+
+    button{
+        width: fit-content;
+        background-color: var(--clr-primary);
+        border: 0;
+        border-radius: var(--border-radius);
+        color: white;
+        padding: 7px ;
+    }
+
+    button:hover{
+        filter: brightness(120%);
+        cursor: pointer;
+    }
+}
+
+@media(max-width: 768px){
+    .create-post{
+        padding-inline: 70px;
+    }
+    
+}

@@ -2,6 +2,7 @@ import {BrowserRouter,Routes,Route } from 'react-router-dom'
 import { RecoilRoot } from 'recoil';
 
 import Home from './components/Home.jsx'
+import Create from './components/Create.jsx';
 
 function App(){
   return <>
@@ -10,7 +11,7 @@ function App(){
     <BrowserRouter>
       <Routes>
           <Route path='/' element={<Home/>}></Route>
-          <Route path='/create' element={`Hello`}></Route>
+          <Route path='/create' element={<Create/>}></Route>
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
