@@ -74,12 +74,12 @@ nav > .right-section > .button-wrapper {
     cursor: pointer;
   }
 
-  >.pfp{
-      height: var(--fs-heading);
+  >a>.pfp{
+      height: var(--fs-heading) ;
       border-radius: 50%;
   }
 
-  >.pfp:hover{
+  >a>.pfp:hover{
     
     cursor: pointer;
     border: 2px solid white;

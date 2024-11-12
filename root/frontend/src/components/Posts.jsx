@@ -34,20 +34,20 @@ function Posts({ _id }) {
       <div className="posts-heading">
         <ErrorBoundary>
           <Suspense fallback={<FontAwesomeIcon icon={faUser} color="white" />}>
-            <img title={username} className="pfp" src={pfp}></img>
+            <NavLink to={`/profile/`+username}>
+              <img title={username} className="pfp" src={pfp}></img>
+            </NavLink>
           </Suspense>
         </ErrorBoundary>
-        <p className="post-heading-info" >
-          <span> {title }</span>
+        <p className="post-heading-info">
+          <span> {title}</span>
           by {username + "  "}
           on {" " + date}
         </p>
       </div>
       <div className="posts-content">
         <p>
-        {content.length > 45 
-        ? `${content.substring(0, 45)} ...`
-        : content}
+          {content.length > 45 ? `${content.substring(0, 45)} ...` : content}
         </p>
       </div>
     </div>

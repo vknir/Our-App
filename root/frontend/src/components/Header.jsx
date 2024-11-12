@@ -96,6 +96,12 @@ function Header() {
     setLoading(true);
   }, []);
 
+  const handleClickPfp= (username)=>{
+    const currentURL= window.location;
+   
+    window.location.replace(currentURL+'profile'+'/'+username)
+  }
+
   return (
     <>
       {loading ? <Loading /> : <></>}
@@ -116,11 +122,14 @@ function Header() {
                   <Suspense
                     fallback={<FontAwesomeIcon icon={faUser} color="white" />}
                   >
+                    <NavLink to={`/profile/`+currentUser.username }>
                     <img
+                      
                       title={currentUser.username}
                       className="pfp"
                       src={currentUser.pfp}
                     ></img>
+                    </NavLink>
                   </Suspense>
                 </ErrorBoundary>
               ) : (
