@@ -52,7 +52,7 @@ function Header() {
           "username"
         )}`
       );
-      
+
       setCurrentUser(response.data);
     } else {
       alert("Invalid credentials");
@@ -86,7 +86,7 @@ function Header() {
             "username"
           )}`
         );
-        
+
         setCurrentUser(response.data);
       }
       setLoading(false);
@@ -116,13 +116,19 @@ function Header() {
                   <Suspense
                     fallback={<FontAwesomeIcon icon={faUser} color="white" />}
                   >
-                    <img title={currentUser.username} className="pfp" src={currentUser.pfp}></img>
+                    <img
+                      title={currentUser.username}
+                      className="pfp"
+                      src={currentUser.pfp}
+                    ></img>
                   </Suspense>
                 </ErrorBoundary>
               ) : (
                 <FontAwesomeIcon icon={faUser} color="white" />
               )}
-              <button className="clr-success">Create Post</button>
+              <NavLink to="/create">
+                <button className="clr-success">Create Post</button>
+              </NavLink>
               <button
                 className="clr-signout"
                 onClick={() => handleClickSignOut()}

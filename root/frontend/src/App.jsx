@@ -10,6 +10,7 @@ function App(){
     <BrowserRouter>
       <Routes>
           <Route path='/' element={<Home/>}></Route>
+          <Route path='/create' element={`Hello`}></Route>
       </Routes>
     </BrowserRouter>
   </RecoilRoot>
