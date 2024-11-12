@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { feedStateFamily } from "../store/atom";
 import { useRecoilState } from "recoil";
+import { ErrorBoundary } from "react-error-boundary";
+import { Suspense } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import "./style/Posts.css";
 
@@ -18,21 +22,35 @@ function Posts({ _id }) {
   const [feed, setFeed] = useRecoilState(feedStateFamily(_id));
   const { postInfo, userInfo } = feed;
   const title = postInfo.title;
+  const content = postInfo.content;
+
   const username = userInfo.username;
+  const pfp = userInfo.pfp;
 
   const date = convertDate(postInfo.date);
 
   return (
-    <NavLink>
-      <div className="posts">
-        <div className="user-pfp"></div>
-        <p>
-          <span> {title + " "}</span>
+    <div className="posts">
+      <div className="posts-heading">
+        <ErrorBoundary>
+          <Suspense fallback={<FontAwesomeIcon icon={faUser} color="white" />}>
+            <img title={username} className="pfp" src={pfp}></img>
+          </Suspense>
+        </ErrorBoundary>
+        <p className="post-heading-info" >
+          <span> {title }</span>
           by {username + "  "}
           on {" " + date}
         </p>
       </div>
-    </NavLink>
+      <div className="posts-content">
+        <p>
+        {content.length > 45 
+        ? `${content.substring(0, 45)} ...`
+        : content}
+        </p>
+      </div>
+    </div>
   );
 }
 

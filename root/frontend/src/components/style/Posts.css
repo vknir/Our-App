@@ -1,21 +1,64 @@
-.posts{
-    font-size:  var(--fs-normal);
-    text-align: left;
+.posts {
+  font-size: var(--fs-normal);
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+  width: 300px;
+
+  padding: 10px;
+
+  border: 1px solid var(--clr-footer-border);
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+
+  box-shadow: 2px 1px var(--clr-footer-border);
+}
+
+.posts:hover {
+  border: 1px solid var(--clr-posts-border);
+  cursor: pointer;
+  box-shadow: 1px 1px var(--clr-posts-border);
+}
+
+.posts-heading {
+  display: flex;
+  align-items:flex-start;
+  .post-heading-info{
+    display: flex;
+    flex-direction: column;
+
+    font-size: var(--fs-small);
+
+    span {
+      font-weight: 700;
+      color: var(--clr-signup-heading);
+      font-size: var(--fs-large);
+    }
+  }
+
+  .pfp {
+    height: var(--fs-large);
+    border-radius: 50%;
+  }
+
+  .pfp:hover {
+    cursor: pointer;
+    border: 2px solid rgb(0, 0, 0);
+  }
+
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.posts-content {
+  padding-inline: 1rem;
+}
+
+@media(max-width:768px) {
     
-    p span{
-        font-weight: 700;
-    };
-
-    padding: 10px;
-    border: 1px solid var(--clr-footer-border);
-    border-radius: var(--border-radius);
-    margin-bottom: 10px;
-
-    box-shadow: 2px 1px var(--clr-footer-border);
+      
 }
-
-.posts:hover{
-    border: 1px solid var(--clr-posts-border);
-    box-shadow: 1px 1px var(--clr-posts-border);
-}
-
