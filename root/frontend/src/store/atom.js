@@ -23,8 +23,8 @@ export const postIdState = atom({
 
 export const currentUserState = atom({
   key: "CurrentUserInfo",
-  
-  default:''
+
+  default: "",
 });
 
 export const feedStateFamily = atomFamily({
@@ -63,17 +63,19 @@ export const feedStateFamily = atomFamily({
   }),
 });
 
-
 export const profileState = atomFamily({
-  key:'profile',
+  key: "profile",
   default: selectorFamily({
-    key:'profileSelectorFamily',
-    get:(username)=>async ({get})=>{
-      const response = await axios.get(`https://our-app-7k9z.onrender.com/user/profile/${username}`) 
-    
-      if(response.data.status != 200)
-        throw 'slector family error'
-      return response.data
-    }
-  })
-})
+    key: "profileSelectorFamily",
+    get:
+      (username) =>
+      async ({ get }) => {
+        const response = await axios.get(
+          `https://our-app-7k9z.onrender.com/user/profile/${username}`
+        );
+
+        if (response.error ) throw "slector family error";
+        return response.data;
+      },
+  }),
+});

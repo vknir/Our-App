@@ -11,7 +11,7 @@ function ProfilePage(params) {
     return <>
     <Header/>
     <Suspense fallback={<Loading/>}>
-        <Profile/>
+        <Profile username={username}/>
     </Suspense>
     <Footer/>
     </>
