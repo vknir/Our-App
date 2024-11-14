@@ -1,0 +1,24 @@
+.mini-profile{
+    width: 100%;
+    margin-bottom: 1rem;
+    
+
+    display: flex;
+    gap: 1rem;
+
+    padding: 10px;
+    border-radius: var(--border-radius);
+    >.pfp{
+        height: var(--fs-heading);
+        border-radius: 50%;
+    }
+}
+
+.mini-profile:hover{
+    background-color: var(--clr-feed-zero-following);
+    color: whitesmoke;
+    cursor: pointer;
+     >.pfp{
+        border: 1px solid white;
+     }
+}

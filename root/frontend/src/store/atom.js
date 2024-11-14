@@ -98,7 +98,7 @@ export const miniProfileState = atomFamily({
           `https://our-app-7k9z.onrender.com/user/info/${userid}`
         );
         if (response.error) throw "mini profile error";
-        return response.data;
+        return response.data.message;
       }
     
   }),

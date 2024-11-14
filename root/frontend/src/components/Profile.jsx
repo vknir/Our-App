@@ -16,84 +16,89 @@ function Profile({ username }) {
   const [profileButtons, setProfileButtons] =
     useRecoilState(profileDisplayState);
 
-  
-      
-  const handleButtonClick= (display)=>{
-    setProfileButtons(display)
-  }  
+  const handleButtonClick = (display) => {
+    setProfileButtons(display);
+  };
+
+  useEffect(()=>{
+    setProfileButtons({posts:true, following:false, followers:false})
+  },[])
 
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <ErrorBoundary>
-          <Suspense fallback={<Loading />}>
-            <div className="profile-info">
-              <div className="profile-heading">
-                <img src={profile.pfp}></img>
-                <h1>{profile.username}</h1>
-              </div>
-              <div className="profile-info-buttons">
-                <button 
-                  onClick={() =>
-                    handleButtonClick({
-                      posts: true,
-                      followers: false,
-                      following: false,
-                    })
-                  }
-                >
-                  Posts: {profile.posts.length}
-                </button>
-                <button
-                  onClick={() =>
-                    handleButtonClick({
-                      posts: false,
-                      followers: false,
-                      following: true,
-                    })
-                  }
-                >
-                  Following: {profile.following.length}
-                </button>
-                <button
-                  onClick={() =>
-                    handleButtonClick({
-                      posts: false,
-                      followers: true,
-                      following: false,
-                    })
-                  }
-                >
-                  Followers: {profile.followers.length}
-                </button>
-              </div>
-              <div className="profile-info-display">
-                {
-                  profileButtons.posts === true ?
-                  <>
-                    {
-                      profile.posts.map( (_id)=>{
-                        return <Posts key={_id} _id={_id}/>
+        <main>
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <div className="profile-info">
+                <div className="profile-heading">
+                  <img src={profile.pfp}></img>
+                  <h1>{profile.username}</h1>
+                </div>
+                <div className="profile-info-buttons">
+                  <button
+                    onClick={() =>
+                      handleButtonClick({
+                        posts: true,
+                        followers: false,
+                        following: false,
                       })
                     }
-                  </>: profileButtons.following === true ? <>
-                    {profile.following.map((userid)=>{
-                      return <MiniProfile userid={userid} key={userid}/>
-                    })}
-                  </>:
-                  profileButtons.followers===true ? 
-                  <>
-                  {profile.followers.map((userid)=>{
-                    return <MiniProfile key={userid} userid={userid}/>
-                  })}
-                  </>:<></>
-                }
+                  >
+                    Posts: {profile.posts.length}
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleButtonClick({
+                        posts: false,
+                        followers: false,
+                        following: true,
+                      })
+                    }
+                  >
+                    Following: {profile.following.length}
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleButtonClick({
+                        posts: false,
+                        followers: true,
+                        following: false,
+                      })
+                    }
+                  >
+                    Followers: {profile.followers.length}
+                  </button>
+                </div>
+                <div className="profile-info-display">
+                  {profileButtons.posts === true ? (
+                    <>
+                      {profile.posts.map((_id) => {
+                        return <Posts key={_id} _id={_id} />;
+                      })}
+                    </>
+                  ) : profileButtons.following === true ? (
+                    <>
+                      {profile.following.map((userid) => {
+                        return <MiniProfile userid={userid} key={userid} />;
+                      })}
+                    </>
+                  ) : profileButtons.followers === true ? (
+                    <>
+                      {profile.followers.map((userid) => {
+                        return <MiniProfile key={userid} userid={userid} />;
+                      })}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
-            </div>
-          </Suspense>
-        </ErrorBoundary>
+            </Suspense>
+          </ErrorBoundary>
+        </main>
       )}
     </>
   );

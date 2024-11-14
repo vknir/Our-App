@@ -103,8 +103,9 @@ body {
 }
 
 main{
-  
+
+  min-height: 400px;
   width: 100vw;
-  min-height: 100%;
+  
 }
 
