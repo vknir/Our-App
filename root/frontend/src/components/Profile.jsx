@@ -1,15 +1,27 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 import "./style/Profile.css";
 import { profileState } from "../store/atom";
 import { ErrorBoundary } from "react-error-boundary";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Loading from "./Loading";
-import { loadingState } from "../store/atom";
+import { loadingState, profileDisplayState } from "../store/atom";
+import Posts from "./Posts";
+import MiniProfile from "./MiniProfile";
 
 function Profile({ username }) {
   const loading = useRecoilValue(loadingState);
   const profile = useRecoilValue(profileState(username));
+
+  const [profileButtons, setProfileButtons] =
+    useRecoilState(profileDisplayState);
+
+  
+      
+  const handleButtonClick= (display)=>{
+    setProfileButtons(display)
+  }  
+
   return (
     <>
       {loading ? (
@@ -23,9 +35,61 @@ function Profile({ username }) {
                 <h1>{profile.username}</h1>
               </div>
               <div className="profile-info-buttons">
-                <button>Posts: {profile.posts.length}</button>
-                <button>Following: {profile.following.length}</button>
-                <button>Followers: {profile.followers.length}</button>
+                <button 
+                  onClick={() =>
+                    handleButtonClick({
+                      posts: true,
+                      followers: false,
+                      following: false,
+                    })
+                  }
+                >
+                  Posts: {profile.posts.length}
+                </button>
+                <button
+                  onClick={() =>
+                    handleButtonClick({
+                      posts: false,
+                      followers: false,
+                      following: true,
+                    })
+                  }
+                >
+                  Following: {profile.following.length}
+                </button>
+                <button
+                  onClick={() =>
+                    handleButtonClick({
+                      posts: false,
+                      followers: true,
+                      following: false,
+                    })
+                  }
+                >
+                  Followers: {profile.followers.length}
+                </button>
+              </div>
+              <div className="profile-info-display">
+                {
+                  profileButtons.posts === true ?
+                  <>
+                    {
+                      profile.posts.map( (_id)=>{
+                        return <Posts key={_id} _id={_id}/>
+                      })
+                    }
+                  </>: profileButtons.following === true ? <>
+                    {profile.following.map((userid)=>{
+                      return <MiniProfile userid={userid} key={userid}/>
+                    })}
+                  </>:
+                  profileButtons.followers===true ? 
+                  <>
+                  {profile.followers.map((userid)=>{
+                    return <MiniProfile key={userid} userid={userid}/>
+                  })}
+                  </>:<></>
+                }
               </div>
             </div>
           </Suspense>

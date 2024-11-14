@@ -1,8 +1,6 @@
 .profile-info {
-  position: absolute;
-  top: 20%;
-  left: 100px;
-  right: 100px;
+  
+  
   padding-inline: 100px;
   display: flex;
   flex-direction: column;
@@ -20,11 +18,13 @@
   }
 
   > .profile-info-buttons {
-    border-bottom: 1px solid var(--clr-footer-border);
+    
     display: flex;
     justify-content: space-around;
+    gap: 1rem;
     >button {
-     
+      
+      border: 0;
       background-color: white;
       color: var(--clr-primary);
       padding: 5px;
@@ -35,7 +35,8 @@
     >button:hover{
         cursor: pointer;
         border: 1px solid var(--clr-footer-border);
-        border-bottom:  0px
+
+        color: black
     }
 
     

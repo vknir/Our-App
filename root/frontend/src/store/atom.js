@@ -27,6 +27,15 @@ export const currentUserState = atom({
   default: "",
 });
 
+export const profileDisplayState = atom({
+  key: "profileDisplay",
+  default: {
+    posts: true,
+    following: false,
+    followers: false,
+  },
+});
+
 export const feedStateFamily = atomFamily({
   key: "feedFamily",
   default: selectorFamily({
@@ -74,8 +83,23 @@ export const profileState = atomFamily({
           `https://our-app-7k9z.onrender.com/user/profile/${username}`
         );
 
-        if (response.error ) throw "slector family error";
+        if (response.error) throw "slector family error";
         return response.data;
       },
+  }),
+});
+
+export const miniProfileState = atomFamily({
+  key: "mini profile",
+  default: selectorFamily({
+    key: "mini profile selector",
+    get: (userid) => async ({ get }) => {
+        const response = await axios.get(
+          `https://our-app-7k9z.onrender.com/user/info/${userid}`
+        );
+        if (response.error) throw "mini profile error";
+        return response.data;
+      }
+    
   }),
 });
