@@ -5,11 +5,17 @@ import { profileState } from "../store/atom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense, useEffect } from "react";
 import Loading from "./Loading";
-import { loadingState, profileDisplayState } from "../store/atom";
+import {
+  loadingState,
+  profileDisplayState,
+  followProfileState,
+} from "../store/atom";
 import Posts from "./Posts";
 import MiniProfile from "./MiniProfile";
+import axios from "axios";
 
 function Profile({ username }) {
+  const followProfile = useRecoilValue(followProfileState);
   const loading = useRecoilValue(loadingState);
   const profile = useRecoilValue(profileState(username));
 
@@ -20,9 +26,15 @@ function Profile({ username }) {
     setProfileButtons(display);
   };
 
-  useEffect(()=>{
-    setProfileButtons({posts:true, following:false, followers:false})
-  },[])
+  useEffect(() => {
+    setProfileButtons({ posts: true, following: false, followers: false });
+    axios
+      .post(
+        `https://our-app-7k9z.onrender.com/user/follow/${profile.username}`,
+        { headers: { Authorization: localStorage.getItem("token") } }
+      )
+      .then((p) => console.log(p));
+  }, []);
 
   return (
     <>
@@ -34,8 +46,28 @@ function Profile({ username }) {
             <Suspense fallback={<Loading />}>
               <div className="profile-info">
                 <div className="profile-heading">
-                  <img src={profile.pfp}></img>
-                  <h1>{profile.username}</h1>
+                  <div className="left-section">
+                    <img src={profile.pfp}></img>
+                    <p>{profile.username}</p>
+                  </div>
+                  <div className="right-section">
+                    {followProfile ? (
+                      <button title="Make your profile on gravatar">
+                        <a
+                          target="_blank"
+                          href="https://wordpress.com/log-in/link?client_id=1854&redirect_to=https%3A%2F%2Fpublic-api.wordpress.com%2Foauth2%2Fauthorize%3Fclient_id%3D1854%26response_type%3Dcode%26blog_id%3D0%26state%3D5cd601686fd805d29ca5db2f477e77f06ce2864569e205db3c25756c3b1f74bf%26redirect_uri%3Dhttps%253A%252F%252Fgravatar.com%252Fconnect%252F%253Faction%253Drequest_access_token%26gravatar_from%3Dsignup%26from-calypso%3D1&gravatar_from=signup"
+                        >
+                          {" "}
+                          edit pfp
+                        </a>
+                      </button>
+                    ) : (
+                      <>
+                        <button>message</button>
+                        <button>follow</button>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div className="profile-info-buttons">
                   <button

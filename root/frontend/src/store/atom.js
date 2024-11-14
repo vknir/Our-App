@@ -89,6 +89,11 @@ export const profileState = atomFamily({
   }),
 });
 
+export const followProfileState =atom({
+  key:"follow profile",
+  default:'',
+})
+
 export const miniProfileState = atomFamily({
   key: "mini profile",
   default: selectorFamily({

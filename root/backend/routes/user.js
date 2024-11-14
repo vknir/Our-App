@@ -159,19 +159,25 @@ userRouter.use(userAuth);
 userRouter.post("/follow/:username", async (req, res) => {
   try {
     const findUser = await UserModel.findOne({ username: req.params.username });
-    if (findUser === null) throw " user doesnot exist finduser";
+    if (findUser === null ) throw " user doesnot exist finduser";
 
     const currentUser = await UserModel.findOne({
       username: req.body.username,
     });
 
-    currentUser.following.push(findUser._id);
-    currentUser.save();
+    if(findUser === currentUser)
+      res.json({message:'Error cannot follow self',follow:0 ,status:400})
 
-    findUser.followers.push(currentUser._id);
-    findUser.save();
-
-    res.json({ message: "user followed", status: 200 });
+    const result = currentUser.following.find(findUser._id)
+    if( result != null){
+      currentUser.following.push(findUser._id)
+      findUser.followers.push(currentUser._id)
+      res.json({message:'user followed sucessfully',follow:1 ,status:200})
+    }
+    else{
+      res.json({message:'User already followed', follow:2 ,status : 200})
+    }
+    
   } catch (e) {
     console.log(e);
     res.json({ message: " user does not exist ", status: 401 });
