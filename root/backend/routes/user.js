@@ -129,7 +129,7 @@ userRouter.get("/profile/:username", async (req, res) => {
       pfp: findUser.pfp,
       followers: findUser.followers.reverse(),
       following: findUser.following.reverse(),
-      posts: findUser.posts,
+      posts: findUser.posts.reverse(),
     };
 
     res.json(userDetails);
