@@ -1,11 +1,16 @@
 .mini-profile{
+    display: block;
+}
+
+.mini-profile > a{
     width: 100%;
     margin-bottom: 1rem;
-    
-
+    text-decoration: none;
+    color: inherit;
     display: flex;
     gap: 1rem;
 
+    
     padding: 10px;
     border-radius: var(--border-radius);
     >.pfp{
@@ -14,7 +19,7 @@
     }
 }
 
-.mini-profile:hover{
+.mini-profile>a:hover{
     background-color: var(--clr-feed-zero-following);
     color: whitesmoke;
     cursor: pointer;

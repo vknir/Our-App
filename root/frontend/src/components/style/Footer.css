@@ -2,7 +2,6 @@ footer{
     text-align: center;
     font-size: var(--fs-small);
     margin-top: 10px;
-    
     border-top: 1px var(--clr-footer-border) solid;
     padding: 20px;
 }

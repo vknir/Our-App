@@ -127,8 +127,8 @@ userRouter.get("/profile/:username", async (req, res) => {
     const userDetails = {
       username: findUser.username,
       pfp: findUser.pfp,
-      followers: findUser.followers,
-      following: findUser.following,
+      followers: findUser.followers.reverse(),
+      following: findUser.following.reverse(),
       posts: findUser.posts,
     };
 
@@ -197,13 +197,10 @@ userRouter.get("/feed", async (req, res) => {
       feed.push(post._id);
     });
   });
-  
+  feed.reverse();
   res.json({feed:feed, status: 200 });
 });
 
-userRouter.get("/create", (req, res) => {
-  res.json({ message: "send create page form", status: 200 });
-});
 
 userRouter.get('/exists', async (req, res)=>{
   try{

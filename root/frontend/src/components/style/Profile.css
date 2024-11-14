@@ -43,6 +43,12 @@
 
     
   }
+
+  > .profile-info-display{
+    display: grid;
+    grid-auto-flow: row-reverse;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 @media(max-width:768px) {
     .profile-info{

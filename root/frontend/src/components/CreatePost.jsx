@@ -39,9 +39,10 @@ function CreatePost() {
           Authorization: localStorage.getItem("token"),
         },
       }
-    );
+    )
 
     if (response.data.status == 200) {
+      window.location.reload();
       alert('Posted successfully');
       e.target[0].value='';
       e.target[1].value='';
