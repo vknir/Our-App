@@ -3,8 +3,7 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
-import{ createHash } from 'crypto';
-
+import { createHash } from "crypto";
 
 import { UserModel, PostsModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
@@ -15,8 +14,6 @@ import mongoose, { Types } from "mongoose";
 const userRouter = express.Router();
 
 userRouter.use(bodyParser.urlencoded({ extended: false }));
-
-
 
 const inputValidator = z.object({
   username: z
@@ -33,8 +30,6 @@ userRouter.post("/sign-up", async (req, res) => {
   try {
     inputValidator.parse({ username, password, email });
 
-    
-
     bcrypt.hash(password, 3, async (err, hash) => {
       try {
         if (err) {
@@ -45,8 +40,8 @@ userRouter.post("/sign-up", async (req, res) => {
         res.json({ message: "Unable to update DB", status: 401 });
       }
 
-      const gravatarHash = createHash('sha256').update(email).digest('hex');
-      const gravatarURL= `https://www.gravatar.com/avatar/${gravatarHash}`
+      const gravatarHash = createHash("sha256").update(email).digest("hex");
+      const gravatarURL = `https://www.gravatar.com/avatar/${gravatarHash}`;
 
       if (hash) {
         const newUser = {
@@ -139,47 +134,37 @@ userRouter.get("/profile/:username", async (req, res) => {
   }
 });
 
-userRouter.get('/info/:userid', async (req, res)=>{
-  const  userID= new mongoose.Types.ObjectId( req.params.userid);
+userRouter.get("/info/:userid", async (req, res) => {
+  const userID = new mongoose.Types.ObjectId(req.params.userid);
   const currentUser = await UserModel.findById(userID);
-  if( currentUser == null)
-    res.json({message:'Error user doen not exist'})
-  const response={
-    username:currentUser.username,
+  if (currentUser == null) res.json({ message: "Error user doen not exist" });
+  const response = {
+    username: currentUser.username,
     _id: currentUser._id,
-    pfp:currentUser.pfp
-  }
+    pfp: currentUser.pfp,
+  };
 
-  res.json({message:response}).status(200)
-
-
-})
+  res.json({ message: response }).status(200);
+});
 userRouter.use(userAuth);
 
 userRouter.post("/follow/:username", async (req, res) => {
   try {
     const findUser = await UserModel.findOne({ username: req.params.username });
-    if (findUser === null ) throw " user doesnot exist finduser";
+    if (findUser === null) throw " user doesnot exist finduser";
 
     const currentUser = await UserModel.findOne({
       username: req.body.username,
     });
 
-    if(findUser._id === currentUser._id)
-      res.json({message:'Error cannot follow self',follow:0 ,status:400})
+    if (findUser._id === currentUser._id)
+      res.json({ message: "Error cannot follow self", follow: 0, status: 400 });
 
-    
-    const result=currentUser.following.find( (_id) => {return _id ===findUser._id})
-    
-    if( result ){
-      currentUser.following.push(findUser._id)
-      findUser.followers.push(currentUser._id)
-      res.json({message:'user followed sucessfully',follow:1 ,status:200})
-    }
-    else{
-      res.json({message:'User already followed', follow:2 ,status : 200})
-    }
-    
+    const result = currentUser.following.find((_id) => {
+      return _id === findUser._id;
+    });
+
+    res.json({ message: "user followed sucessfully", follow: 1, status: 200 });
   } catch (e) {
     console.log(e);
     res.json({ message: " user does not exist ", status: 401 });
@@ -206,22 +191,20 @@ userRouter.get("/feed", async (req, res) => {
     });
   });
   feed.reverse();
-  res.json({feed:feed, status: 200 });
+  res.json({ feed: feed, status: 200 });
 });
 
-
-userRouter.get('/exists', async (req, res)=>{
-  try{
-  const currentUser= await UserModel.findOne( {username: req.body.username})
-    if(currentUser === null)
-      throw 'user dose not exsit /exists'
-    res.json({message:'user exists',status:200})
-}catch(e)
-  {
-    res.json({message:'user does not exist /exists ', status:404})
+userRouter.get("/exists", async (req, res) => {
+  try {
+    const currentUser = await UserModel.findOne({
+      username: req.body.username,
+    });
+    if (currentUser === null) throw "user dose not exsit /exists";
+    res.json({ message: "user exists", status: 200 });
+  } catch (e) {
+    res.json({ message: "user does not exist /exists ", status: 404 });
   }
-})
-
+});
 
 userRouter.use("/posts", userPostsRouter);
 
