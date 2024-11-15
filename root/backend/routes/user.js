@@ -168,8 +168,8 @@ userRouter.post("/follow/:username", async (req, res) => {
     if(findUser === currentUser)
       res.json({message:'Error cannot follow self',follow:0 ,status:400})
 
-    const following = currentUser.following;
-    const result=following.find( (_id) => {return _id ===findUser._id})
+    
+    const result=currentUser.following.find( (_id) => {return _id ===findUser._id})
     
     if( result != null){
       currentUser.following.push(findUser._id)
