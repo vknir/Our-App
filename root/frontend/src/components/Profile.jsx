@@ -1,7 +1,7 @@
 import { useRecoilValue, useRecoilState } from "recoil";
 
 import "./style/Profile.css";
-import { profileState } from "../store/atom";
+import { profileState, loginState } from "../store/atom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense, useEffect } from "react";
 import Loading from "./Loading";
@@ -12,12 +12,12 @@ import {
 } from "../store/atom";
 import Posts from "./Posts";
 import MiniProfile from "./MiniProfile";
-import axios from "axios";
 
 function Profile({ username }) {
-  const followProfile = useRecoilValue(followProfileState);
+  const followProfile = useRecoilValue(followProfileState(username));
   const loading = useRecoilValue(loadingState);
   const profile = useRecoilValue(profileState(username));
+  const login = useRecoilValue(loginState);
 
   const [profileButtons, setProfileButtons] =
     useRecoilState(profileDisplayState);
@@ -28,7 +28,6 @@ function Profile({ username }) {
 
   useEffect(() => {
     setProfileButtons({ posts: true, following: false, followers: false });
-    
   }, []);
 
   return (
@@ -58,8 +57,18 @@ function Profile({ username }) {
                       </button>
                     ) : (
                       <>
-                        <button>message</button>
-                        <button>follow</button>
+                        {login &&
+                        username != localStorage.getItem("username") ? (
+                          <>
+                            <button>message</button>
+                            <ErrorBoundary><Suspense fallback={loading}>{  }</Suspense></ErrorBoundary>
+                            
+                          </>
+                        ) : (
+                          <></>
+                        )}
+
+                        {}
                       </>
                     )}
                   </div>

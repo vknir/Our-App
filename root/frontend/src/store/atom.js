@@ -1,4 +1,5 @@
 import axios from "axios";
+import { header } from "express-validator";
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
 export const loadingState = atom({
@@ -89,22 +90,37 @@ export const profileState = atomFamily({
   }),
 });
 
-export const followProfileState =atom({
-  key:"follow profile",
-  default:'',
-})
+export const followProfileState = atom({
+  key: "follow profile",
+  default: selectorFamily({
+    key: "follow profile selectorFamily",
+    get:
+      (username) =>
+      async ({ get }) => {
+        const response = await axios.post(
+          `https://our-app-7k9z.onrender.com/user/follow/${username}`,
+          {headers: {
+            Authorization: localStorage.getItem('token')
+          }}
+        );
+        console.log(response)
+        return response;
+      },
+  }),
+});
 
 export const miniProfileState = atomFamily({
   key: "mini profile",
   default: selectorFamily({
     key: "mini profile selector",
-    get: (userid) => async ({ get }) => {
+    get:
+      (userid) =>
+      async ({ get }) => {
         const response = await axios.get(
           `https://our-app-7k9z.onrender.com/user/info/${userid}`
         );
         if (response.error) throw "mini profile error";
         return response.data.message;
-      }
-    
+      },
   }),
 });
