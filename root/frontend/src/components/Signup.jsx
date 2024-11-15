@@ -6,13 +6,15 @@ import "./style/Signup.css";
 
 import Loading from "./Loading";
 
-import { lengthState, loadingState, loginState } from "../store/atom";
+import { currentUserState, lengthState, loadingState, loginState } from "../store/atom";
 import Feed from "./Feed";
 
 function Signup() {
   const [loading, setLoading] = useRecoilState(loadingState);
   const [login, setLogin] = useRecoilState(loginState);
   const [length, setLength] = useRecoilState(lengthState);
+  const [currentUser, setCurrentUser]=useRecoilState(currentUserState);
+
 
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -53,6 +55,13 @@ function Signup() {
       localStorage.setItem("token", `${loginResponse.data.token}`);
       localStorage.setItem("username", username);
     }
+
+    const findUser = await axios.get(`https://our-app-7k9z.onrender.com/user/profile/${localStorage.getItem(
+      "username"
+    )}`) 
+
+    setCurrentUser(findUser.data)
+
     setLoading(false);
   }
 
