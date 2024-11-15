@@ -28,12 +28,7 @@ function Profile({ username }) {
 
   useEffect(() => {
     setProfileButtons({ posts: true, following: false, followers: false });
-    axios
-      .post(
-        `https://our-app-7k9z.onrender.com/user/follow/${profile.username}`,
-        { headers: { Authorization: localStorage.getItem("token") } }
-      )
-      .then((p) => console.log(p));
+    
   }, []);
 
   return (
