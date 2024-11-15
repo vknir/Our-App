@@ -90,16 +90,18 @@ export const profileState = atomFamily({
   }),
 });
 
-export const followProfileState = atom({
+export const followProfileState = atomFamily({
   key: "follow profile",
   default: selectorFamily({
     key: "follow profile selectorFamily",
     get:
       (username) =>
       async ({ get }) => {
+        console.log('user  to be followed ',username)
         const response = await axios.post(
-          `https://our-app-7k9z.onrender.com/user/follow/${username}`,
+          `https://our-app-7k9z.onrender.com/user/follow/${username}`,{},
           {headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
             Authorization: localStorage.getItem('token')
           }}
         );
