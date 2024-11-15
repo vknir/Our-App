@@ -148,6 +148,22 @@ userRouter.get("/info/:userid", async (req, res) => {
 });
 userRouter.use(userAuth);
 
+userRouter.get('/followcheck/:username', async (req, res)=>{
+  try{
+  const currentUser = await UserModel.findOne({username: req.body.username})
+    if(currentUser === null)
+      throw 'current user dosent exist'
+  const findUser = await UserModel.findOne({username: req.params.username})
+    if(findUser === null)
+        throw 'findUser dosent exist'
+
+  res.json({res:JSON.stringify(currentUser._id) == JSON.stringify( findUser._id)})
+  }catch(e){
+    console.log(e)
+    res.json({message: e});
+  }
+})
+
 userRouter.post("/follow/:username", async (req, res) => {
   try {
     const findUser = await UserModel.findOne({ username: req.params.username });
