@@ -171,7 +171,7 @@ userRouter.post("/follow/:username", async (req, res) => {
     
     const result=currentUser.following.find( (_id) => {return _id ===findUser._id})
     
-    if( result != null){
+    if( result ){
       currentUser.following.push(findUser._id)
       findUser.followers.push(currentUser._id)
       res.json({message:'user followed sucessfully',follow:1 ,status:200})
