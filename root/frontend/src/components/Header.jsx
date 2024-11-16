@@ -15,13 +15,20 @@ import { NavLink } from "react-router-dom";
 
 import Loading from "./Loading.jsx";
 
-import { loginState, loadingState, currentUserState } from "../store/atom.js";
+import {
+  loginState,
+  loadingState,
+  currentUserState,
+  searchState,
+} from "../store/atom.js";
 import { useEffect } from "react";
+import Search from "./Search.jsx";
 
 function Header() {
   const [login, setLogin] = useRecoilState(loginState);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [search, setSearch] = useRecoilState(searchState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,66 +103,65 @@ function Header() {
     setLoading(true);
   }, []);
 
-  const handleClickPfp= (username)=>{
-    const currentURL= window.location;
-   
-    window.location.replace(currentURL+'profile'+'/'+username)
-  }
-
   return (
     <>
       {loading ? <Loading /> : <></>}
-      <nav>
-        <div className="left-section">
-          <NavLink to="/">
-            <p>OurApp</p>
-          </NavLink>
-        </div>
+      {search ? (
+        <Search />
+      ) : (<></>)}
+        <nav>
+          <div className="left-section">
+            <NavLink to="/">
+              <p>OurApp</p>
+            </NavLink>
+          </div>
 
-        <div className="right-section">
-          {login ? (
-            <div className="button-wrapper">
-              <FontAwesomeIcon icon={faSearch} color="white" />
-              <FontAwesomeIcon icon={faComment} color="white" />
-              {login ? (
-                <ErrorBoundary>
-                  <Suspense
-                    fallback={<FontAwesomeIcon icon={faUser} color="white" />}
-                  >
-                    <NavLink to={`/profile/`+currentUser.username }>
-                    <img
-                      
-                      title={currentUser.username}
-                      className="pfp"
-                      src={currentUser.pfp}
-                    ></img>
-                    </NavLink>
-                  </Suspense>
-                </ErrorBoundary>
-              ) : (
-                <FontAwesomeIcon icon={faUser} color="white" />
-              )}
-              <NavLink to="/create">
-                <button className="clr-success">Create Post</button>
-              </NavLink>
-              <NavLink to="/">
-                <button
-                  className="clr-signout"
-                  onClick={() => handleClickSignOut()}
-                >
-                  Sign Out
+          <div className="right-section">
+            {login ? (
+              <div className="button-wrapper">
+                <button onClick={() => setSearch(true)}>
+                  <FontAwesomeIcon icon={faSearch} color="white" />
                 </button>
-              </NavLink>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <input type="text" placeholder="Username"></input>
-              <input type="password" placeholder="Password"></input>
-              <button type="submit">Login</button>
-            </form>
-          )}
-        </div>
-      </nav>
+                <FontAwesomeIcon icon={faComment} color="white" />
+                {login ? (
+                  <ErrorBoundary>
+                    <Suspense
+                      fallback={<FontAwesomeIcon icon={faUser} color="white" />}
+                    >
+                      <NavLink to={`/profile/` + currentUser.username}>
+                        <img
+                          title={currentUser.username}
+                          className="pfp"
+                          src={currentUser.pfp}
+                        ></img>
+                      </NavLink>
+                    </Suspense>
+                  </ErrorBoundary>
+                ) : (
+                  <FontAwesomeIcon icon={faUser} color="white" />
+                )}
+                <NavLink to="/create">
+                  <button className="clr-success">Create Post</button>
+                </NavLink>
+                <NavLink to="/">
+                  <button
+                    className="clr-signout"
+                    onClick={() => handleClickSignOut()}
+                  >
+                    Sign Out
+                  </button>
+                </NavLink>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <input type="text" placeholder="Username"></input>
+                <input type="password" placeholder="Password"></input>
+                <button type="submit">Login</button>
+              </form>
+            )}
+          </div>
+        </nav>
+    
     </>
   );
 }

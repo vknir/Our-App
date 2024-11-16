@@ -1,5 +1,4 @@
 import axios from "axios";
-import { header } from "express-validator";
 import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
 export const loadingState = atom({
@@ -36,6 +35,11 @@ export const profileDisplayState = atom({
     followers: false,
   },
 });
+
+export const searchState= atom ({
+  key:'search State',
+  default:false
+})
 
 export const feedStateFamily = atomFamily({
   key: "feedFamily",
@@ -122,3 +126,5 @@ export const miniProfileState = atomFamily({
       },
   }),
 });
+
+

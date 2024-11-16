@@ -1,0 +1,39 @@
+.search-wrapper{
+    position: absolute;
+    z-index: 1;
+    height: 100vh;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-size: var(--fs-heading);
+    display: flex;
+    justify-content: center;
+    opacity: .8;
+    >.search-box{
+        padding-inline: 25px;
+        padding-top: 50px;
+        display: flex;
+        height: var(--fs-heading);
+        align-items: center;
+
+        height: 100px;
+        >svg{
+            
+            transition: 0.2s;
+        }
+        >.x:hover{
+            cursor: pointer;
+            color: red;
+            transform: scale(1.2);
+        }
+        
+        >input{
+            padding-inline: 50px ;
+            width: 100%;
+            border: 0;
+        }
+
+        >input:focus{
+            outline: none;
+        }
+    }
+}

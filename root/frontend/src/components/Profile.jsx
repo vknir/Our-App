@@ -32,22 +32,23 @@ function Profile({ username }) {
   };
 
   const handleFollowClick = async () => {
-    axios.post(
+    await axios.post(
       `https://our-app-7k9z.onrender.com/user/follow/${username}`,
       {},
       { headers: { Authorization: localStorage.getItem("token") } }
     );
     setFollowProfile((username));
-    location.reload();
+    
   };
 
   const handleUnFollowClick = async () => {
-    axios.post(
+    await axios.post(
       `https://our-app-7k9z.onrender.com/user/unfollow/${username}`,
       {},
       { headers: { Authorization: localStorage.getItem("token") } }
     );
     setFollowProfile((username));
+    
   };
 
 
@@ -87,7 +88,7 @@ function Profile({ username }) {
                         <>
                           <FontAwesomeIcon icon={faEnvelope} />
                           {followProfile ? (
-                            <button className="unfollow">Unfollow</button>
+                            <button onClick={handleUnFollowClick} className="unfollow">Unfollow</button>
                           ) : (
                             <button
                               onClick={handleFollowClick}
