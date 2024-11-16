@@ -98,13 +98,9 @@ export const followProfileState = atomFamily({
       (username) =>
       async ({ get }) => {
         
-        const response = await axios.get(
-          `https://our-app-7k9z.onrender.com/user/followcheck/${username}`,{},
-          {headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: localStorage.getItem('token')
-          }}
-        );
+        const response = await axios.get(`https://our-app-7k9z.onrender.com/user/followcheck/${username}`, {headers:{
+          Authorization:localStorage.getItem('token')
+        }})
         console.log(response)
         return response;
       },

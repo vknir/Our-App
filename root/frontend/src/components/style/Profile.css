@@ -8,8 +8,8 @@
   > .profile-heading {
     display: flex;
     align-items: flex-end;
-    gap: 10rem;
-
+    gap:10rem;
+    margin-bottom: 1rem;
     > .left-section {
       display: flex;
       align-items: flex-end;
