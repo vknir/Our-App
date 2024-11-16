@@ -45,31 +45,23 @@ function Profile({ username }) {
                     <p>{profile.username}</p>
                   </div>
                   <div className="right-section">
-                    {followProfile ? (
-                      <button title="Make your profile on gravatar">
-                        <a
-                          target="_blank"
-                          href="https://wordpress.com/log-in/link?client_id=1854&redirect_to=https%3A%2F%2Fpublic-api.wordpress.com%2Foauth2%2Fauthorize%3Fclient_id%3D1854%26response_type%3Dcode%26blog_id%3D0%26state%3D5cd601686fd805d29ca5db2f477e77f06ce2864569e205db3c25756c3b1f74bf%26redirect_uri%3Dhttps%253A%252F%252Fgravatar.com%252Fconnect%252F%253Faction%253Drequest_access_token%26gravatar_from%3Dsignup%26from-calypso%3D1&gravatar_from=signup"
-                        >
-                          {" "}
-                          edit pfp
-                        </a>
-                      </button>
+                    {login ? (
+                      (localStorage.getItem("username") == profile.username) ? (
+                        <>
+                          <button>
+                            <a href="https://shorturl.at/8ikKY" target="_blank">
+                              Edit Profile Picture
+                            </a>
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                        <button>Message</button>
+                        {/* {followProfile } */}
+                        </>
+                      )
                     ) : (
-                      <>
-                        {login &&
-                        username != localStorage.getItem("username") ? (
-                          <>
-                            <button>message</button>
-                            <ErrorBoundary><Suspense fallback={loading}>{  }</Suspense></ErrorBoundary>
-                            
-                          </>
-                        ) : (
-                          <></>
-                        )}
-
-                        {}
-                      </>
+                      <></>
                     )}
                   </div>
                 </div>

@@ -97,9 +97,9 @@ export const followProfileState = atomFamily({
     get:
       (username) =>
       async ({ get }) => {
-        console.log('user  to be followed ',username)
-        const response = await axios.post(
-          `https://our-app-7k9z.onrender.com/user/follow/${username}`,{},
+        
+        const response = await axios.get(
+          `https://our-app-7k9z.onrender.com/user/followcheck/${username}`,{},
           {headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             Authorization: localStorage.getItem('token')

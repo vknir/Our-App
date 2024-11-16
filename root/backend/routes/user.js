@@ -148,21 +148,33 @@ userRouter.get("/info/:userid", async (req, res) => {
 });
 userRouter.use(userAuth);
 
-userRouter.get('/followcheck/:username', async (req, res)=>{
-  try{
-  const currentUser = await UserModel.findOne({username: req.body.username})
-    if(currentUser === null)
-      throw 'current user dosent exist'
-  const findUser = await UserModel.findOne({username: req.params.username})
-    if(findUser === null)
-        throw 'findUser dosent exist'
+userRouter.get("/followcheck/:username", async (req, res) => {
 
-  res.json({res:JSON.stringify(currentUser._id) == JSON.stringify( findUser._id)})
-  }catch(e){
-    console.log(e)
-    res.json({message: e});
+  try{
+  const currentUser= await UserModel.findOne({username: req.body.username})
+
+  const findUser = await UserModel.findOne( {username: req.params.username})
+
+  if(currentUser == null || findUser == null)
+    throw 'user not found'
+
+  const result = currentUser.following.find( _id=> {
+    return JSON.stringify(_id) === JSON.stringify(findUser._id)
+  })
+  if(result !=undefined)
+  {
+    res.json({follows:true})
   }
-})
+  else{
+  res.json({follows:false})
+  }
+  }catch(e)
+  {
+    console.log(e)
+    res.json({message:'Error in /followcheck'})
+  }
+
+});
 
 userRouter.post("/follow/:username", async (req, res) => {
   try {
@@ -173,13 +185,25 @@ userRouter.post("/follow/:username", async (req, res) => {
       username: req.body.username,
     });
 
-    if (findUser._id === currentUser._id)
+    if (JSON.stringify(findUser) === JSON.stringify(currentUser)) {
       res.json({ message: "Error cannot follow self", follow: 0, status: 400 });
-
-    currentUser.following.push(findUser._id)
-    findUser.followers.push(currentUser._id)
-
-    res.json({ message: "user followed sucessfully", follow: 1, status: 200 });
+    } else if (
+      currentUser.following.find((account) => {
+        return JSON.stringify(account) === JSON.stringify(findUser._id);
+      })
+    ) {
+      res.json({ message: "User already followed", follow: 1, status: 200 });
+    } else {
+      currentUser.following.push(findUser._id);
+      findUser.followers.push(currentUser._id);
+      await currentUser.save();
+      await findUser.save();
+      res.json({
+        message: "user followed sucessfully",
+        follow: 2,
+        status: 200,
+      });
+    }
   } catch (e) {
     console.log(e);
     res.json({ message: " user does not exist ", status: 401 });
