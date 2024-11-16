@@ -210,6 +210,35 @@ userRouter.post("/follow/:username", async (req, res) => {
   }
 });
 
+userRouter.post("/unfollow/:username", async (req, res) => {
+  try{
+    const currentUser= await UserModel.findOne({username: req.body.username})
+    const  findUser =await UserModel.findOne({username : req.params.username})
+
+    if( currentUser == null || findUser == null)
+    {
+      throw 'user not found'
+    }
+
+    const indexCurrent= currentUser.following.indexOf( findUser._id)
+    const indexFind = findUser.followers.indexOf(currentUser._id)
+    if( indexCurrent > -1 && indexFind > -1)
+    {
+      currentUser.following.splice(indexCurrent,1);
+      findUser.followers.splice(indexFind,1);
+    }
+
+    await currentUser.save()
+    await findUser.save()
+    res.json({message:'User unfollowed successfully'})
+  }catch(e)
+  {
+    console.log(e)
+    res.json({message:'Error at /unfollow/:username'})
+  }
+});
+
+
 userRouter.get("/feed", async (req, res) => {
   const currentUserId = new mongoose.Types.ObjectId(req.body._id);
   const currentUser = await UserModel.findById(currentUserId);

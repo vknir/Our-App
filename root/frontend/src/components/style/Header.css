@@ -43,7 +43,7 @@ nav >.right-section button {
   padding-inline: 10px;
   padding-block: 5px;
   border-radius: var(--border-radius);
-
+  transition: 0.3s;
   color: white;
 
   max-width: fit-content;
@@ -69,6 +69,7 @@ nav > .right-section > .button-wrapper {
   }
   svg {
     font-size: var(--fs-large);
+    
   }
   svg :hover {
     cursor: pointer;
@@ -77,6 +78,7 @@ nav > .right-section > .button-wrapper {
   >a>.pfp{
       height: var(--fs-heading) ;
       border-radius: 50%;
+      transition: 0.1s;
   }
 
   >a>.pfp:hover{

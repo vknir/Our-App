@@ -101,8 +101,8 @@ export const followProfileState = atomFamily({
         const response = await axios.get(`https://our-app-7k9z.onrender.com/user/followcheck/${username}`, {headers:{
           Authorization:localStorage.getItem('token')
         }})
-        console.log(response)
-        return response;
+        
+        return response.data.follows;
       },
   }),
 });

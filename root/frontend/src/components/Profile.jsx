@@ -12,9 +12,14 @@ import {
 } from "../store/atom";
 import Posts from "./Posts";
 import MiniProfile from "./MiniProfile";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 function Profile({ username }) {
-  const followProfile = useRecoilValue(followProfileState(username));
+  const [followProfile, setFollowProfile] = useRecoilState(
+    followProfileState(username)
+  );
   const loading = useRecoilValue(loadingState);
   const profile = useRecoilValue(profileState(username));
   const login = useRecoilValue(loginState);
@@ -25,6 +30,26 @@ function Profile({ username }) {
   const handleButtonClick = (display) => {
     setProfileButtons(display);
   };
+
+  const handleFollowClick = async () => {
+    axios.post(
+      `https://our-app-7k9z.onrender.com/user/follow/${username}`,
+      {},
+      { headers: { Authorization: localStorage.getItem("token") } }
+    );
+    setFollowProfile((username));
+    location.reload();
+  };
+
+  const handleUnFollowClick = async () => {
+    axios.post(
+      `https://our-app-7k9z.onrender.com/user/unfollow/${username}`,
+      {},
+      { headers: { Authorization: localStorage.getItem("token") } }
+    );
+    setFollowProfile((username));
+  };
+
 
   useEffect(() => {
     setProfileButtons({ posts: true, following: false, followers: false });
@@ -46,18 +71,31 @@ function Profile({ username }) {
                   </div>
                   <div className="right-section">
                     {login ? (
-                      (localStorage.getItem("username") == profile.username) ? (
+                      localStorage.getItem("username") == profile.username ? (
                         <>
                           <button>
-                            <a href="https://shorturl.at/8ikKY" target="_blank">
+                            <a
+                              href="https://shorturl.at/8ikKY"
+                              title="Make/update your profile picture on gravatar.com"
+                              target="_blank"
+                            >
                               Edit Profile Picture
                             </a>
                           </button>
                         </>
                       ) : (
                         <>
-                        <button>Message</button>
-                        {/* {followProfile } */}
+                          <FontAwesomeIcon icon={faEnvelope} />
+                          {followProfile ? (
+                            <button className="unfollow">Unfollow</button>
+                          ) : (
+                            <button
+                              onClick={handleFollowClick}
+                              className="follow"
+                            >
+                              Follow
+                            </button>
+                          )}
                         </>
                       )
                     ) : (
