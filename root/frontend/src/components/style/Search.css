@@ -3,18 +3,21 @@
     z-index: 1;
     height: 100vh;
     width: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--clr-footer-border);
     font-size: var(--fs-heading);
     display: flex;
     justify-content: center;
-    opacity: .8;
+    opacity: .9;
+    padding-top: 50px;
     >.search-box{
+        background-color: white;
         padding-inline: 25px;
-        padding-top: 50px;
+       
         display: flex;
         height: var(--fs-heading);
         align-items: center;
 
+        border-radius: var(--border-radius);
         height: 100px;
         >svg{
             
@@ -24,6 +27,11 @@
             cursor: pointer;
             color: red;
             transform: scale(1.2);
+        }
+
+        >.magnifying-glass:hover{
+            transform: scale(1.2);
+            color: var(--clr-success);
         }
         
         >input{

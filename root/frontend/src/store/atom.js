@@ -36,10 +36,31 @@ export const profileDisplayState = atom({
   },
 });
 
-export const searchState= atom ({
-  key:'search State',
-  default:false
-})
+export const searchState = atom({
+  key: "search State",
+  default: false,
+});
+
+export const queryState = atomFamily({
+  key: "query state",
+  default: selectorFamily({
+    key: "query state selector",
+    get:
+      (text) =>
+      async ({ get }) => {
+        const response = await axios.post(
+          `https://our-app-7k9z.onrender.com/user/find`,
+          {
+            text: text,
+          },
+          { headers: { Authorization: localStorage.getItem("token") } }
+        );
+
+        console.log(response)
+        return response;
+      },
+  }),
+});
 
 export const feedStateFamily = atomFamily({
   key: "feedFamily",
@@ -101,11 +122,15 @@ export const followProfileState = atomFamily({
     get:
       (username) =>
       async ({ get }) => {
-        
-        const response = await axios.get(`https://our-app-7k9z.onrender.com/user/followcheck/${username}`, {headers:{
-          Authorization:localStorage.getItem('token')
-        }})
-        
+        const response = await axios.get(
+          `https://our-app-7k9z.onrender.com/user/followcheck/${username}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+
         return response.data.follows;
       },
   }),
@@ -126,5 +151,3 @@ export const miniProfileState = atomFamily({
       },
   }),
 });
-
-

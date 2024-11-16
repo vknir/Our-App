@@ -149,31 +149,27 @@ userRouter.get("/info/:userid", async (req, res) => {
 userRouter.use(userAuth);
 
 userRouter.get("/followcheck/:username", async (req, res) => {
+  try {
+    const currentUser = await UserModel.findOne({
+      username: req.body.username,
+    });
 
-  try{
-  const currentUser= await UserModel.findOne({username: req.body.username})
+    const findUser = await UserModel.findOne({ username: req.params.username });
 
-  const findUser = await UserModel.findOne( {username: req.params.username})
+    if (currentUser == null || findUser == null) throw "user not found";
 
-  if(currentUser == null || findUser == null)
-    throw 'user not found'
-
-  const result = currentUser.following.find( _id=> {
-    return JSON.stringify(_id) === JSON.stringify(findUser._id)
-  })
-  if(result !=undefined)
-  {
-    res.json({follows:true})
+    const result = currentUser.following.find((_id) => {
+      return JSON.stringify(_id) === JSON.stringify(findUser._id);
+    });
+    if (result != undefined) {
+      res.json({ follows: true });
+    } else {
+      res.json({ follows: false });
+    }
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error in /followcheck" });
   }
-  else{
-  res.json({follows:false})
-  }
-  }catch(e)
-  {
-    console.log(e)
-    res.json({message:'Error in /followcheck'})
-  }
-
 });
 
 userRouter.post("/follow/:username", async (req, res) => {
@@ -211,33 +207,31 @@ userRouter.post("/follow/:username", async (req, res) => {
 });
 
 userRouter.post("/unfollow/:username", async (req, res) => {
-  try{
-    const currentUser= await UserModel.findOne({username: req.body.username})
-    const  findUser =await UserModel.findOne({username : req.params.username})
+  try {
+    const currentUser = await UserModel.findOne({
+      username: req.body.username,
+    });
+    const findUser = await UserModel.findOne({ username: req.params.username });
 
-    if( currentUser == null || findUser == null)
-    {
-      throw 'user not found'
+    if (currentUser == null || findUser == null) {
+      throw "user not found";
     }
 
-    const indexCurrent= currentUser.following.indexOf( findUser._id)
-    const indexFind = findUser.followers.indexOf(currentUser._id)
-    if( indexCurrent > -1 && indexFind > -1)
-    {
-      currentUser.following.splice(indexCurrent,1);
-      findUser.followers.splice(indexFind,1);
+    const indexCurrent = currentUser.following.indexOf(findUser._id);
+    const indexFind = findUser.followers.indexOf(currentUser._id);
+    if (indexCurrent > -1 && indexFind > -1) {
+      currentUser.following.splice(indexCurrent, 1);
+      findUser.followers.splice(indexFind, 1);
     }
 
-    await currentUser.save()
-    await findUser.save()
-    res.json({message:'User unfollowed successfully'})
-  }catch(e)
-  {
-    console.log(e)
-    res.json({message:'Error at /unfollow/:username'})
+    await currentUser.save();
+    await findUser.save();
+    res.json({ message: "User unfollowed successfully" });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error at /unfollow/:username" });
   }
 });
-
 
 userRouter.get("/feed", async (req, res) => {
   const currentUserId = new mongoose.Types.ObjectId(req.body._id);
@@ -272,6 +266,23 @@ userRouter.get("/exists", async (req, res) => {
   } catch (e) {
     res.json({ message: "user does not exist /exists ", status: 404 });
   }
+});
+
+userRouter.post("/find", async (req, res) => {
+  const text = req.body.text;
+  const userQuery = await UserModel.find(
+    { username: { $regex: text, $options: "i" } },
+    "-password",
+
+    { lean: true }
+  ).select("-posts -following -email -followers -password");
+  const postsQuery = await PostsModel.find({
+    title: { $regex: text, $options: "i" },
+  })
+    .populate("userId", "-posts -following -email -followers -password")
+    .select("-content");
+  const finalResult = userQuery.concat(postsQuery);
+  res.json({ finalResult });
 });
 
 userRouter.use("/posts", userPostsRouter);
