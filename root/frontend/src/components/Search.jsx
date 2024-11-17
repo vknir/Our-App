@@ -22,6 +22,7 @@ function Search() {
 
   return (
     <ErrorBoundary>
+      <Suspense fallback={<Loading />}>
       <div className="search-wrapper">
         <div className="search-box">
           <FontAwesomeIcon
@@ -29,14 +30,14 @@ function Search() {
             icon={faMagnifyingGlass}
           />
 
-          <Suspense fallback={<Loading />}>
+          
             <input
               placeholder="Search for posts or users"
               onChange={(e) => {
                 setQuery(e.target.value);
               }}
             ></input>
-          </Suspense>
+          
 
           <FontAwesomeIcon
             className="x"
@@ -45,6 +46,7 @@ function Search() {
           />
         </div>
       </div>
+      </Suspense>
     </ErrorBoundary>
   );
 }

@@ -48,6 +48,7 @@ export const queryState = atomFamily({
     get:
       (text) =>
       async ({ get }) => {
+        console.log('called')
         const response = await axios.post(
           `https://our-app-7k9z.onrender.com/user/find`,
           {
