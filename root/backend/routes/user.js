@@ -278,7 +278,7 @@ userRouter.post("/find", async (req, res) => {
     { lean: true }
   ).select("-posts -following -email -followers -password");
   const postsQuery = await PostsModel.find({
-    title: { $regex: text, $options: "i" },
+    title: { $regex: `${text}`, $options: "i" },
   })
     .populate("userId", "-posts -following -email -followers -password")
     .select("-content");
