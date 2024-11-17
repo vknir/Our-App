@@ -42,7 +42,7 @@ function CreatePost() {
     )
 
     if (response.data.status == 200) {
-      window.location.reload();
+      
      
       e.target[0].value='';
       e.target[1].value='';
