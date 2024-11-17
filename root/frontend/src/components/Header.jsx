@@ -106,19 +106,18 @@ function Header() {
   return (
     <>
       {loading ? <Loading /> : <></>}
-      {search ? (
-        <Search />
-      ) : (<></>)}
-        <nav>
-          <div className="left-section">
-            <NavLink to="/">
-              <p>OurApp</p>
-            </NavLink>
-          </div>
+      {search ? <Search /> : <></>}
+      <nav>
+        <div className="left-section">
+          <NavLink to="/">
+            <p>OurApp</p>
+          </NavLink>
+        </div>
 
-          <div className="right-section">
-            {login ? (
-              <div className="button-wrapper">
+        <div className="right-section">
+          {login ? (
+            <div className="button-wrapper">
+              <div className="icon-buttons">
                 <button onClick={() => setSearch(true)}>
                   <FontAwesomeIcon icon={faSearch} color="white" />
                 </button>
@@ -140,6 +139,8 @@ function Header() {
                 ) : (
                   <FontAwesomeIcon icon={faUser} color="white" />
                 )}
+              </div>
+              <div className="routing-buttons">
                 <NavLink to="/create">
                   <button className="clr-success">Create Post</button>
                 </NavLink>
@@ -152,16 +153,16 @@ function Header() {
                   </button>
                 </NavLink>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Username"></input>
-                <input type="password" placeholder="Password"></input>
-                <button type="submit">Login</button>
-              </form>
-            )}
-          </div>
-        </nav>
-    
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="Username"></input>
+              <input type="password" placeholder="Password"></input>
+              <button type="submit">Login</button>
+            </form>
+          )}
+        </div>
+      </nav>
     </>
   );
 }

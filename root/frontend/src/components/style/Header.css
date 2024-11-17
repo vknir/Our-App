@@ -24,7 +24,7 @@ nav > .right-section > form {
   gap: 0.5rem;
 }
 
-nav >.right-section > form > input {
+nav > .right-section > form > input {
   background-color: var(--clr-header-input-bckg);
   border: 0;
 
@@ -36,7 +36,7 @@ nav >.right-section > form > input {
   border-radius: var(--border-radius);
 }
 
-nav >.right-section button {
+nav > .right-section button {
   background-color: var(--clr-primary);
   border: 0;
 
@@ -57,34 +57,41 @@ nav > .right-section button:hover {
 
 nav > .right-section > .button-wrapper {
   display: flex;
-  align-items: center;
   gap: 1rem;
+  align-items: center;
+  > .routing-buttons {
+    display: flex;
+    gap: 1rem;
+    .clr-success {
+      background-color: var(--clr-success);
+    }
 
-  .clr-success {
-    background-color: var(--clr-success);
-  }
-
-  .clr-signout {
-    background-color: var(--clr-signout);
-  }
-  svg {
-    font-size: var(--fs-large);
-    
-  }
-  svg :hover {
-    cursor: pointer;
+    .clr-signout {
+      background-color: var(--clr-signout);
+    }
   }
 
-  >a>.pfp{
-      height: var(--fs-heading) ;
+  > .icon-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    svg {
+      font-size: var(--fs-large);
+    }
+    svg :hover {
+      cursor: pointer;
+    }
+
+    > a > .pfp {
+      height: var(--fs-heading);
       border-radius: 50%;
       transition: 0.1s;
-  }
+    }
 
-  >a>.pfp:hover{
-    
-    cursor: pointer;
-    border: 2px solid white;
+    > a > .pfp:hover {
+      cursor: pointer;
+      border: 2px solid white;
+    }
   }
 }
 
@@ -93,6 +100,7 @@ nav > .right-section > .button-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-inline: 50px;
   }
 
   nav > .right-section > form {
@@ -114,5 +122,12 @@ nav > .right-section > .button-wrapper {
 
       gap: 0.5rem;
     }
+  }
+}
+
+@media (max-width:450px) {
+  nav > .right-section > .button-wrapper{
+    display: flex;
+    flex-direction: column;
   }
 }
