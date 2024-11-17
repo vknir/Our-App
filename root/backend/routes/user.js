@@ -270,6 +270,7 @@ userRouter.get("/exists", async (req, res) => {
 
 userRouter.post("/find", async (req, res) => {
   const text = req.body.text;
+  try{
   const userQuery = await UserModel.find(
     { username: { $regex: `${text}`, $options: "i" } },
     "-password",
@@ -283,6 +284,11 @@ userRouter.post("/find", async (req, res) => {
     .select("-content");
   const finalResult = userQuery.concat(postsQuery);
   res.json({ finalResult });
+  }catch(e)
+  {
+    console.log(e)
+    res.json({message:'Error in /user/find'})
+  }
 });
 
 userRouter.use("/posts", userPostsRouter);
