@@ -16,7 +16,8 @@ function Search() {
   function useDebounce(e) {
     clearTimeout(clock);
     clock = setTimeout(() => {
-      setQuery(e.target.value);
+      console.log(e.target.value)
+      setQuery((e.target.value));
     }, 1000);
   }
 
@@ -34,7 +35,7 @@ function Search() {
             <input
               placeholder="Search for posts or users"
               onChange={(e) => {
-                setQuery(e.target.value);
+                useDebounce(e)
               }}
             ></input>
           

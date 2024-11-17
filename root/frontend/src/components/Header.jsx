@@ -106,7 +106,7 @@ function Header() {
   return (
     <>
       {loading ? <Loading /> : <></>}
-      {search ? <Search /> : <></>}
+      {search ?<ErrorBoundary> <Suspense fallback={<Loading/>}> <Search /></Suspense>  </ErrorBoundary>: <></>}
       <nav>
         <div className="left-section">
           <NavLink to="/">

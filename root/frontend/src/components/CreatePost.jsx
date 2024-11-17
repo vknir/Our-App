@@ -43,7 +43,7 @@ function CreatePost() {
 
     if (response.data.status == 200) {
       window.location.reload();
-      alert('Posted successfully');
+     
       e.target[0].value='';
       e.target[1].value='';
     } else alert('Unable to post');
