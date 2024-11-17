@@ -39,8 +39,8 @@ function Signup() {
     const loginResponse = await axios.post(
       "https://our-app-7k9z.onrender.com/user/sign-up",
       {
-        username: username,
-        email: email,
+        username: username.trim(),
+        email: email.trim(),
         password: password,
       },
       {

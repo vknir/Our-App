@@ -40,7 +40,7 @@ function Posts({ _id }) {
           </Suspense>
         </ErrorBoundary>
         <p className="post-heading-info">
-          <span> {title}</span>
+          <span> {title.length > 10 ? `${title.substring(0, 9)} ...` : title}</span>
           by {username + "  "}
           on {" " + date}
         </p>

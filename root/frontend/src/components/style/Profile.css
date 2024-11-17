@@ -8,7 +8,7 @@
   > .profile-heading {
     display: flex;
     align-items: flex-end;
-    gap:10rem;
+    gap:5rem;
     margin-bottom: 1rem;
     > .left-section {
       display: flex;
@@ -90,8 +90,43 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
-@media (max-width: 768px) {
+
+
+
+@media (max-width: 900px) {
   .profile-info {
     padding-inline: 50px;
+    
+    
+
+  >.profile-info-display{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-info{
+
+    >.profile-heading{
+      >.left-section{
+        display: flex;
+        align-items: center;
+      >img{
+        height: var(--fs-heading);
+      }
+
+      p{
+        font-family: var(--fs-heading);
+        font-weight: 700;
+      }
+    }
+  }
+
+  .profile-info-display{
+    display: flex;
+    flex-direction: column;
+  }
+}
 }

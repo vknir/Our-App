@@ -40,7 +40,7 @@ function Header() {
     const loginResponse = await axios.post(
       "https://our-app-7k9z.onrender.com/user/login",
       {
-        username: username,
+        username: username.trim(),
         password: password,
       },
       {
