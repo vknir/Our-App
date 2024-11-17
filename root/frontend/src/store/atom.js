@@ -53,10 +53,12 @@ export const queryState = atomFamily({
           {
             text: text,
           },
-          { headers: { Authorization: localStorage.getItem("token") } }
+          { "Content-Type": "application/x-www-form-urlencoded",
+            headers: { Authorization: localStorage.getItem("token") } 
+          }
         );
 
-        console.log(response)
+        console.log(response);
         return response;
       },
   }),
