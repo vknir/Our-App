@@ -271,7 +271,7 @@ userRouter.get("/exists", async (req, res) => {
 userRouter.post("/find", async (req, res) => {
   const text = req.body.text;
   const userQuery = await UserModel.find(
-    { username: { $regex: text, $options: "i" } },
+    { username: { $regex: `${text}`, $options: "i" } },
     "-password",
 
     { lean: true }
