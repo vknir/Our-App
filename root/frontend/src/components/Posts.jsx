@@ -28,12 +28,11 @@ function Posts({ _id, singularPost }) {
   const pfp = userInfo.pfp;
 
   const date = convertDate(postInfo.date);
-  
 
   return (
-    <Link to={`/posts/${_id}`}>
+    <>
       {singularPost ? (
-        <>  
+        <>
           <div className="singular-posts">
             <div className="singular-posts-heading">
               <ErrorBoundary>
@@ -46,23 +45,20 @@ function Posts({ _id, singularPost }) {
                 </Suspense>
               </ErrorBoundary>
               <p className="post-heading-info">
-                <span>
-                  {" "}
-                  {title}
-                </span>
+                <span> {title}</span>
                 by {username + "  "}
                 on {" " + date}
               </p>
             </div>
             <div className="singular-posts-content">
-              <p>
-                { content}
-              </p>
+              <p>{content}</p>
             </div>
           </div>
         </>
       ) : (
-        <div className="posts">
+        <div onClick={ ()=>{
+          location.href=`/posts/${_id}`
+        }} className="posts">
           <div className="posts-heading">
             <ErrorBoundary>
               <Suspense
@@ -91,7 +87,7 @@ function Posts({ _id, singularPost }) {
           </div>
         </div>
       )}
-    </Link>
+    </>
   );
 }
 

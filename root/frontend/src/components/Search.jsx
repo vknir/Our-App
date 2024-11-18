@@ -4,20 +4,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "./style/Search.css";
 import { useRef, Suspense } from "react";
-import { queryState } from "../store/atom";
+import { queryStateSelector } from "../store/atom";
 import { ErrorBoundary } from "react-error-boundary";
 import Loading from "./Loading";
 
 function Search() {
   const [search, setSearch] = useRecoilState(searchState);
-  const [query, setQuery] = useRecoilState(queryState(""));
+ 
   let clock = useRef();
 
   function useDebounce(e) {
     clearTimeout(clock);
     clock = setTimeout(() => {
       console.log(e.target.value)
-      setQuery((e.target.value));
+      
     }, 1000);
   }
 
