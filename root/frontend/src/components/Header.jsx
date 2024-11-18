@@ -118,10 +118,13 @@ function Header() {
           {login ? (
             <div className="button-wrapper">
               <div className="icon-buttons">
-                <button onClick={() => setSearch(true)}>
+                <button className="icon" onClick={() => setSearch(true)}>
                   <FontAwesomeIcon icon={faSearch} color="white" />
                 </button>
+
+                <button className="icon">
                 <FontAwesomeIcon icon={faComment} color="white" />
+                </button>
                 {login ? (
                   <ErrorBoundary>
                     <Suspense

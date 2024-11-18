@@ -92,6 +92,10 @@ nav > .right-section > .button-wrapper {
       cursor: pointer;
       border: 2px solid white;
     }
+
+    >.icon{
+      background-color: var(--clr-header-bckg);
+    }
   }
 }
 

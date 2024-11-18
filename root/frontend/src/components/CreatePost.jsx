@@ -42,8 +42,8 @@ function CreatePost() {
     )
 
     if (response.data.status == 200) {
-      
-     
+      window.location.reload()
+      alert('Post created successfully')
       e.target[0].value='';
       e.target[1].value='';
     } else alert('Unable to post');
@@ -56,7 +56,7 @@ function CreatePost() {
           <label>Title</label>
           <input placeholder="Blank post will not be uploaded"></input>
           <label>Body Content</label>
-          <textarea placeholder="Blank post will not be uploaded" rows={length ? 12 : 22}></textarea>
+          <textarea placeholder="Blank post will not be uploaded" rows={length ? 10 : 20}></textarea>
           <button type="submit">Save New Post</button>
         </form>
       </main>

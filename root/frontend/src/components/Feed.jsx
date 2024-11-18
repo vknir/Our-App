@@ -31,7 +31,7 @@ function Feed() {
                 <p className="heading">Latest from those you Follow</p>
                 <div className="posts-wrapper">
                   {postId.map((item) => (
-                    <Posts key={item} _id={item} />
+                    <Posts key={item} _id={item} singularPost={false} />
                   ))}
                 </div>
               </div>
