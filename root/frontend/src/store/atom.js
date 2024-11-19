@@ -43,31 +43,31 @@ export const searchState = atom({
 
 export const queryState = atomFamily({
   key: "query state",
-  default: "",
-});
+  default: selectorFamily({
+    get:
+      (text) =>
+      async ({ get }) => {
+        console.log("called");
+        const response = await axios.post(
+          `https://our-app-7k9z.onrender.com/user/find`,
+          {
+            text: text,
+          },
+          {
+            "Content-Type": "application/x-www-form-urlencoded",
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
 
-export const queryStateSelector = selectorFamily({
-  key: "queryStateSelectorSetter",
-  get:
-    (text) =>
-    async ({ get }) => {
-      console.log("called");
-      const response = await axios.post(
-        `https://our-app-7k9z.onrender.com/user/find`,
-        {
-          text: text,
-        },
-        {
-          "Content-Type": "application/x-www-form-urlencoded",
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
-
-      console.log(response);
-      return response;
-    },
-    set: ({set}, text)=>set(queryState, text)
-  
+        console.log(response);
+        return response;
+      },
+    set: ({set, get}, newData)=>{
+      const currenState= get(queryState(newData))
+      // const newState= [...currenState, ...newData]
+      set(queryState, currenState)
+    }
+    }),
 });
 
 export const feedStateFamily = atomFamily({
