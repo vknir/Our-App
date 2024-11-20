@@ -13,9 +13,6 @@ const io=new Server(  httpServer,{cors:{origins:['*']}})
 const port = process.env.PORT || 3000;
 
 
-io.on('connection', (socket)=>{
-  console.log('hello')
-})
 
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -28,6 +25,9 @@ async function main() {
 }
 
 main();
+io.on('connection', (socket)=>{
+  console.log('hello')
+})
 
 app.use(cors());
 app.use("/user", userRouter);
