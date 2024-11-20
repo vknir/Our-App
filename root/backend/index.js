@@ -9,24 +9,22 @@ import { MONGO_URL } from "../backend/config.js";
 
 const app = express();
 const httpServer = createServer(app);
-const io=new Server(  httpServer,{})
+const io=new Server(  httpServer,{cors:{origins:['*']}})
 const port = process.env.PORT || 3000;
-const port2= process.env.PORT || 3001;
+
 
 io.on('connection', (socket)=>{
-
+  console.log('hello')
 })
 
 async function main() {
   await mongoose.connect(MONGO_URL);
   
-  httpServer.listen(port2, ()=>{
-    console.log(`httpserver io listening on ${port2}`)
+  httpServer.listen(port, ()=>{
+    console.log(`httpserver io listening on ${port}`)
   })
   
-  app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-  });
+  
 }
 
 main();
