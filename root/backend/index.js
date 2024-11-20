@@ -27,6 +27,9 @@ async function main() {
 main();
 io.on('connection', (socket)=>{
   console.log('hello')
+  socket.on('new user', (username)=>{
+    console.log(username)
+  })
 })
 
 app.use(cors());
